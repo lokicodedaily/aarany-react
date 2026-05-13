@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import Placeholder from '@/components/Placeholder';
-import SectionHead from '@/components/SectionHead';
+import { Placeholder } from '@/components/placeholder';
+import { SectionHead } from '@/components/section-head';
+import { Button } from '@/components/ui/button';
 import { fetchOrFallback, queries } from '@/lib/sanity';
 import { fallbackTestimonial } from '@/lib/data';
 
@@ -23,53 +24,46 @@ const highlights = [
   { num: '04', title: 'Pink Leaf Café', body: 'Our garden café — pour-overs, sourdough toasties, jam from the kitchen, jazz on Sundays.' },
 ];
 
+const marqueeRow = ['· STAY ·', 'SAFARI', 'POOL VILLAS', 'PINK LEAF CAFÉ', 'BONFIRES', 'BIRDWATCHING', 'TREKS'];
+
 export default async function HomePage() {
   const testimonial = await fetchOrFallback(queries.featuredTestimonial, fallbackTestimonial);
 
   return (
     <>
-      {/* Hero — editorial */}
-      <section style={{ position: 'relative', padding: '40px 0 0' }}>
+      {/* Hero — editorial split */}
+      <section className="relative pt-10">
         <div className="container">
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: 48,
-              alignItems: 'end',
-              paddingBottom: 32,
-            }}
-          >
+          <div className="grid md:grid-cols-2 gap-12 items-end pb-8">
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 32 }}>
+              <div className="mb-8">
                 <span className="num">N° 01 / SATPURA FOOTHILLS</span>
               </div>
               <h1
                 className="display"
                 style={{ fontSize: 'clamp(64px, 10vw, 168px)', lineHeight: 0.92, letterSpacing: '-0.03em' }}
               >
-                Aarany<span style={{ fontStyle: 'italic', fontWeight: 300, color: 'var(--moss)' }}>.</span>
+                Aarany<span className="italic font-light text-moss">.</span>
               </h1>
               <p
-                className="italic"
-                style={{
-                  fontSize: 'clamp(22px, 2.4vw, 32px)',
-                  color: 'var(--ink-soft)',
-                  marginTop: 12,
-                  lineHeight: 1.2,
-                }}
+                className="italic-display text-ink-soft mt-3"
+                style={{ fontSize: 'clamp(22px, 2.4vw, 32px)', lineHeight: 1.2 }}
               >
                 Serenity, that you deserve.
               </p>
             </div>
-            <div style={{ paddingBottom: 16 }}>
-              <p style={{ fontSize: 17, lineHeight: 1.6, color: 'var(--ink-soft)', maxWidth: 460, marginLeft: 'auto' }}>
+            <div className="pb-4">
+              <p className="text-[17px] leading-[1.6] text-ink-soft max-w-[460px] md:ml-auto">
                 A small jungle retreat tucked into the green folds of Madhya Pradesh — three pool-side villas, a quiet
                 restaurant, and a café called <em>Pink Leaf</em>. We serve slow mornings and louder evenings around the fire.
               </p>
-              <div style={{ display: 'flex', gap: 12, marginTop: 28, justifyContent: 'flex-end' }}>
-                <Link href="/stay" className="btn btn-primary btn-arrow">Plan a Stay</Link>
-                <Link href="/adventures" className="btn btn-ghost">Adventures</Link>
+              <div className="flex gap-3 mt-7 md:justify-end">
+                <Button variant="primary" arrow asChild>
+                  <Link href="/stay">Plan a Stay</Link>
+                </Button>
+                <Button variant="ghost" asChild>
+                  <Link href="/adventures">Adventures</Link>
+                </Button>
               </div>
             </div>
           </div>
@@ -78,29 +72,19 @@ export default async function HomePage() {
             label="Hero · Wide drone shot — pool villas at dusk, jungle beyond, warm lanterns"
             ratio="21/9"
             corner="01 · HERO"
-            style={{ marginTop: 8 }}
+            className="mt-2"
           />
 
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: 0,
-              marginTop: 28,
-              borderTop: '1px solid var(--line)',
-              borderBottom: '1px solid var(--line)',
-            }}
-          >
+          <div className="grid grid-cols-2 md:grid-cols-4 mt-7 border-y border-line">
             {stats.map((s, i) => (
               <div
                 key={s.v}
-                style={{
-                  padding: '22px 24px',
-                  borderLeft: i === 0 ? 'none' : '1px solid var(--line)',
-                }}
+                className={`p-[22px_24px] ${i === 0 || i === 2 ? '' : 'border-l border-line'} ${
+                  i >= 2 ? 'md:border-l md:border-line border-t md:border-t-0' : ''
+                }`}
               >
-                <div className="display" style={{ fontSize: 38, lineHeight: 1 }}>{s.k}</div>
-                <div className="mono" style={{ marginTop: 6, color: 'var(--ink-mute)' }}>{s.v}</div>
+                <div className="display text-[38px] leading-none">{s.k}</div>
+                <div className="mono mt-1.5 text-ink-mute">{s.v}</div>
               </div>
             ))}
           </div>
@@ -108,25 +92,13 @@ export default async function HomePage() {
       </section>
 
       {/* Marquee */}
-      <div
-        style={{
-          borderTop: '1px solid var(--line)',
-          borderBottom: '1px solid var(--line)',
-          padding: '18px 0',
-          overflow: 'hidden',
-          whiteSpace: 'nowrap',
-        }}
-      >
-        <div style={{ display: 'inline-flex', gap: 40, animation: 'marquee 40s linear infinite' }}>
+      <div className="border-y border-line py-[18px] overflow-hidden whitespace-nowrap">
+        <div className="inline-flex gap-10 animate-marquee">
           {[0, 1, 2, 3].map((i) => (
-            <span key={i} className="mono" style={{ color: 'var(--ink-mute)', display: 'inline-flex', gap: 40 }}>
-              <span>· STAY ·</span>
-              <span>SAFARI</span>
-              <span>POOL VILLAS</span>
-              <span>PINK LEAF CAFÉ</span>
-              <span>BONFIRES</span>
-              <span>BIRDWATCHING</span>
-              <span>TREKS</span>
+            <span key={i} className="mono text-ink-mute inline-flex gap-10">
+              {marqueeRow.map((t) => (
+                <span key={t}>{t}</span>
+              ))}
             </span>
           ))}
         </div>
@@ -135,34 +107,27 @@ export default async function HomePage() {
       {/* About */}
       <section className="section">
         <div className="container">
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1.4fr',
-              gap: 'clamp(40px, 6vw, 100px)',
-              alignItems: 'start',
-            }}
-          >
-            <div style={{ position: 'sticky', top: 100 }}>
+          <div className="grid md:grid-cols-[1fr_1.4fr] gap-10 md:gap-[clamp(40px,6vw,100px)] items-start">
+            <div className="md:sticky md:top-[100px]">
               <SectionHead num="N° 02" eyebrow="The House" title="A small place, kept on purpose." />
             </div>
             <div className="stack-lg">
-              <p style={{ fontSize: 22, lineHeight: 1.45, fontFamily: 'var(--serif)', fontWeight: 300 }}>
+              <p className="font-serif font-light text-[22px] leading-[1.45]">
                 Aarany sits on twelve forested acres at the edge of the Satpura range, an hour and a quarter from Bhopal.
                 The land was a fruit grove; the trees stayed, the rest came slowly.
               </p>
-              <p style={{ color: 'var(--ink-soft)', fontSize: 16, maxWidth: 580 }}>
+              <p className="text-ink-soft text-base max-w-[580px]">
                 We kept the house small on purpose — three pool villas, one shared veranda, a kitchen that opens onto the
                 garden. Mornings are for birds and chai; afternoons for the pool; evenings for whatever the kitchen has
                 picked that day. Children are welcome. Phones, less so.
               </p>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginTop: 8 }}>
+              <div className="grid grid-cols-2 gap-4 mt-2">
                 <Placeholder label="Veranda — ceiling fans, cane chairs, brass" ratio="4/5" corner="02·a" />
                 <Placeholder
                   label="Detail — hand-thrown clay cup on stone ledge"
                   ratio="4/5"
                   corner="02·b"
-                  style={{ marginTop: 40 }}
+                  className="mt-10"
                 />
               </div>
             </div>
@@ -171,14 +136,7 @@ export default async function HomePage() {
       </section>
 
       {/* Highlights */}
-      <section
-        className="section-tight"
-        style={{
-          background: 'var(--bg-soft)',
-          borderTop: '1px solid var(--line)',
-          borderBottom: '1px solid var(--line)',
-        }}
-      >
+      <section className="section-tight bg-bg-soft border-y border-line">
         <div className="container">
           <SectionHead
             num="N° 03"
@@ -186,27 +144,17 @@ export default async function HomePage() {
             title="What you&apos;ll find <em>here.</em>"
             kicker="A short list, on purpose. We do a few things and try to do them well."
           />
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: 0,
-              marginTop: 64,
-              borderTop: '1px solid var(--line)',
-            }}
-          >
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-16 border-t border-line">
             {highlights.map((it, i) => (
               <div
                 key={it.num}
-                style={{
-                  padding: '32px 28px',
-                  borderRight: i < highlights.length - 1 ? '1px solid var(--line)' : 'none',
-                  borderBottom: '1px solid var(--line)',
-                }}
+                className={`p-[32px_28px] border-b border-line ${
+                  i < highlights.length - 1 ? 'lg:border-r' : ''
+                } ${i % 2 === 0 ? 'sm:border-r' : ''} border-line`}
               >
                 <span className="num">{it.num}</span>
-                <h3 className="display" style={{ fontSize: 28, marginTop: 18, lineHeight: 1.05 }}>{it.title}</h3>
-                <p style={{ fontSize: 14, color: 'var(--ink-soft)', marginTop: 14, lineHeight: 1.55 }}>{it.body}</p>
+                <h3 className="display text-[28px] mt-4 leading-[1.05]">{it.title}</h3>
+                <p className="text-sm text-ink-soft mt-3.5 leading-[1.55]">{it.body}</p>
               </div>
             ))}
           </div>
@@ -216,26 +164,26 @@ export default async function HomePage() {
       {/* Pink Leaf feature */}
       <section className="section">
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 56, alignItems: 'center' }}>
+          <div className="grid md:grid-cols-[1.2fr_1fr] gap-14 items-center">
             <Placeholder
               label="Pink Leaf — café table, pour-over kit, rosemary in a clay vase"
               ratio="5/4"
               corner="04"
             />
             <div>
-              <span className="eyebrow" style={{ color: 'var(--pink-deep)' }}>N° 04 — A garden café</span>
-              <h2 className="display" style={{ fontSize: 'clamp(40px, 5vw, 72px)', marginTop: 20 }}>
+              <span className="eyebrow text-pink-deep">N° 04 — A garden café</span>
+              <h2 className="display mt-5" style={{ fontSize: 'clamp(40px, 5vw, 72px)' }}>
                 Pink <em>Leaf</em>.
               </h2>
-              <p className="hand" style={{ fontSize: 28, color: 'var(--pink-deep)', marginTop: 4 }}>
-                est. under the gulmohar tree
-              </p>
-              <p style={{ marginTop: 22, color: 'var(--ink-soft)', fontSize: 16, lineHeight: 1.6 }}>
+              <p className="font-hand text-[28px] text-pink-deep mt-1">est. under the gulmohar tree</p>
+              <p className="mt-[22px] text-ink-soft text-base leading-[1.6]">
                 A 12-seat café tucked between the pool villas and the kitchen garden. Beans from Coorg, bread baked at six,
                 citrus jam from December oranges. Open to guests and to anyone who finds their way to the gate.
               </p>
-              <div style={{ marginTop: 32 }}>
-                <Link href="/pink-leaf" className="btn btn-ghost btn-arrow">Visit Pink Leaf</Link>
+              <div className="mt-8">
+                <Button variant="ghost" arrow asChild>
+                  <Link href="/pink-leaf">Visit Pink Leaf</Link>
+                </Button>
               </div>
             </div>
           </div>
@@ -243,18 +191,15 @@ export default async function HomePage() {
       </section>
 
       {/* Quote */}
-      <section
-        className="section-tight"
-        style={{ borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)' }}
-      >
-        <div className="container" style={{ textAlign: 'center' }}>
+      <section className="section-tight border-y border-line">
+        <div className="container text-center">
           <svg
             width="48"
             height="48"
             viewBox="0 0 48 48"
             fill="none"
             aria-hidden
-            style={{ color: 'var(--moss)', margin: '0 auto' }}
+            className="text-moss mx-auto"
           >
             <circle cx="24" cy="24" r="3" fill="currentColor" />
             {Array.from({ length: 12 }).map((_, i) => {
@@ -267,19 +212,12 @@ export default async function HomePage() {
             })}
           </svg>
           <p
-            className="display"
-            style={{
-              fontSize: 'clamp(28px, 3.6vw, 48px)',
-              lineHeight: 1.2,
-              maxWidth: 880,
-              margin: '24px auto 0',
-              fontStyle: 'italic',
-              fontWeight: 300,
-            }}
+            className="display italic font-light max-w-[880px] mx-auto mt-6"
+            style={{ fontSize: 'clamp(28px, 3.6vw, 48px)', lineHeight: 1.2 }}
           >
             “{(testimonial as { quote: string }).quote}”
           </p>
-          <div className="mono" style={{ color: 'var(--ink-mute)', marginTop: 28 }}>
+          <div className="mono text-ink-mute mt-7">
             {(testimonial as { author: string }).author.toUpperCase()} ·{' '}
             {(testimonial as { meta?: string }).meta?.toUpperCase()}
           </div>

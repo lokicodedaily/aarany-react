@@ -1,0 +1,148 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design tokens — HSL components only so Tailwind's color system can
+   wrap them with opacity modifiers (text-ink/60, bg-bg/80). */
+@layer base {
+  :root {
+    --bg:          39 47% 94%;   /* #f6f1e7 */
+    --bg-soft:     39 41% 89%;   /* #efe7d6 */
+    --ink:         128 19% 14%;  /* #1d2a1f */
+    --ink-soft:    123 11% 26%;  /* #3a4a3c */
+    --ink-mute:    110 5% 44%;   /* #6a766a */
+    --line:        43 36% 76%;   /* #d8cdb4 */
+    --moss:        113 16% 20%;  /* #2c3a2a */
+    --forest:      120 25% 13%;  /* #1a2a1a */
+    --terracotta:  16 51% 47%;   /* #b85c3a */
+    --sand:        38 56% 67%;   /* #d8b97e */
+    --pink:        7 56% 81%;    /* #e8b9b3 */
+    --pink-deep:   5 47% 63%;    /* #c97a72 */
+  }
+
+  /* Pink Leaf scope — swaps palette tokens on the body for one page only */
+  body.page-pinkleaf {
+    --bg:          15 60% 96%;   /* #fbf3ef */
+    --bg-soft:     15 51% 91%;   /* #f3e2db */
+    --ink:         350 33% 17%;  /* #3a1d22 */
+    --ink-soft:    347 33% 29%;  /* #62313a */
+    --ink-mute:    351 14% 49%;  /* #8e6a70 */
+    --line:        9 53% 84%;    /* #e8c8c0 */
+    --moss:        347 33% 31%;  /* #6b3540 */
+    --forest:      350 33% 17%;  /* #3a1d22 */
+    --terracotta:  5 47% 63%;    /* #c97a72 */
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    @apply bg-bg text-ink font-sans antialiased;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-serif;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    margin: 0;
+    line-height: 1.05;
+    text-wrap: balance;
+  }
+  p { margin: 0; text-wrap: pretty; }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; }
+  img { display: block; max-width: 100%; }
+}
+
+@layer components {
+  /* Editorial typographic helpers used across pages */
+  .mono {
+    @apply font-mono uppercase;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+  }
+  .eyebrow {
+    @apply font-mono uppercase text-ink-mute;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+  }
+  .display {
+    @apply font-serif;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+  }
+  .italic-display {
+    @apply font-serif italic;
+    font-weight: 300;
+  }
+  .num {
+    @apply font-mono text-ink-mute;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+  }
+
+  /* Section padding rhythm */
+  .section { padding: clamp(72px, 10vw, 140px) 0; position: relative; }
+  .section-tight { padding: clamp(56px, 7vw, 100px) 0; }
+
+  /* Hatched placeholder card — used everywhere instead of real photos for now */
+  .ph {
+    position: relative;
+    background:
+      repeating-linear-gradient(135deg,
+        rgba(0,0,0,0.04) 0 1px, transparent 1px 14px),
+      linear-gradient(180deg,
+        hsl(var(--bg-soft)),
+        color-mix(in oklab, hsl(var(--bg-soft)) 80%, hsl(var(--moss)) 20%));
+    @apply border border-line rounded text-ink-soft overflow-hidden;
+  }
+  .ph::after {
+    content: attr(data-label);
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 8px 12px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: hsl(var(--ink-mute));
+    background: linear-gradient(180deg, transparent, color-mix(in oklab, hsl(var(--bg)) 60%, transparent));
+  }
+  .ph-corner {
+    position: absolute; top: 10px; left: 10px;
+    font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.12em;
+    color: hsl(var(--ink-mute)); opacity: 0.6;
+  }
+
+  /* Nav (sticky, blurred over content) */
+  .nav-shell {
+    @apply sticky top-0 z-50 border-b border-line;
+    background: color-mix(in oklab, hsl(var(--bg)) 88%, transparent);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+  }
+
+  /* Underline-on-hover nav link */
+  .nav-link {
+    @apply relative text-ink-soft text-[13px] py-1.5 px-0.5;
+  }
+  .nav-link::after {
+    content: ""; position: absolute; left: 0; right: 100%; bottom: 0; height: 1px;
+    background: currentColor; transition: right .3s ease;
+  }
+  .nav-link:hover::after,
+  .nav-link[aria-current="page"]::after { right: 0; }
+
+  /* Stack utility — vertical rhythm without margin gymnastics */
+  .stack-sm > * + * { margin-top: 8px; }
+  .stack-md > * + * { margin-top: 16px; }
+  .stack-lg > * + * { margin-top: 28px; }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
+  .tabular { font-variant-numeric: tabular-nums; }
+}

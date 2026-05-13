@@ -1,8 +1,8 @@
 # build output
 .next/
 out/
-build/
 dist/
+build/
 
 # dependencies
 node_modules/
@@ -13,12 +13,12 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# environment
+# env
 .env
 .env.local
 .env*.local
 
-# typescript
+# ts
 *.tsbuildinfo
 next-env.d.ts
 

@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { LeafMark } from './leaf-mark';
+import { Button } from './ui/button';
 
 const links = [
   { href: '/', label: 'Home' },
@@ -17,23 +19,22 @@ function isActive(href: string, pathname: string) {
   return pathname === href || pathname.startsWith(href + '/');
 }
 
-export default function Nav() {
-  const pathname = usePathname() || '/';
+export function Nav() {
+  const pathname = usePathname() ?? '/';
   return (
-    <nav className="nav">
-      <div className="container nav-inner">
-        <Link href="/" className="brand" style={{ cursor: 'pointer', textDecoration: 'none' }}>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden style={{ color: 'var(--moss)', flexShrink: 0 }}>
-            <path d="M3 21 C3 12 9 4 21 3 C20 14 13 20 3 21 Z" stroke="currentColor" strokeWidth="1.2" fill="none" />
-            <path d="M3 21 C9 16 14 11 21 3" stroke="currentColor" strokeWidth="1.2" />
-          </svg>
+    <nav className="nav-shell">
+      <div className="container flex items-center justify-between h-[68px]">
+        <Link href="/" className="flex items-baseline gap-2.5 no-underline">
+          <LeafMark size={20} className="text-moss shrink-0 self-center" />
           <div>
-            <div className="brand-mark">AARANY</div>
-            <div className="brand-sub">Jungle Resort &amp; Adventure</div>
+            <div className="font-serif text-[22px] tracking-[0.12em] font-medium leading-none">AARANY</div>
+            <div className="font-mono text-[9px] tracking-[0.22em] text-ink-mute uppercase mt-1">
+              Jungle Resort &amp; Adventure
+            </div>
           </div>
         </Link>
 
-        <div className="nav-links">
+        <div className="hidden md:flex items-center gap-7">
           {links.map((l) => (
             <Link
               key={l.href}
@@ -46,7 +47,9 @@ export default function Nav() {
           ))}
         </div>
 
-        <Link href="/stay" className="nav-cta">Reserve</Link>
+        <Button variant="nav" size="sm" asChild>
+          <Link href="/stay">Reserve</Link>
+        </Button>
       </div>
     </nav>
   );

@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import { Fragment } from 'react';
 import type { Metadata } from 'next';
-import Placeholder from '@/components/Placeholder';
-import SectionHead from '@/components/SectionHead';
+import { Placeholder } from '@/components/placeholder';
+import { SectionHead } from '@/components/section-head';
+import { Button } from '@/components/ui/button';
 import { fetchOrFallback, queries } from '@/lib/sanity';
 import { fallbackBeans, fallbackPinkleafMenu, fallbackCafeHours } from '@/lib/data';
 
@@ -40,109 +41,54 @@ export default async function PinkLeafPage() {
     <>
       {/* Hero */}
       <section
-        style={{
-          position: 'relative',
-          padding: '60px 0 40px',
-          background: 'linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 100%)',
-        }}
+        className="relative pt-14 pb-10"
+        style={{ background: 'linear-gradient(180deg, hsl(var(--bg)) 0%, hsl(var(--bg-soft)) 100%)' }}
       >
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48, alignItems: 'center' }}>
+          <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <div
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 10,
-                  padding: '6px 14px',
-                  borderRadius: 999,
-                  border: '1px solid var(--line)',
-                  background: 'var(--bg)',
-                }}
-              >
-                <span
-                  style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--pink-deep)' }}
-                />
-                <span className="mono" style={{ fontSize: 10, color: 'var(--ink-soft)' }}>
-                  A SUB OF AARANY · OPEN 07–18
-                </span>
+              <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-line bg-bg">
+                <span className="w-2 h-2 rounded-full bg-pink-deep" />
+                <span className="mono text-[10px] text-ink-soft">A SUB OF AARANY · OPEN 07–18</span>
               </div>
               <h1
-                className="display"
-                style={{
-                  fontSize: 'clamp(64px, 9vw, 148px)',
-                  lineHeight: 0.88,
-                  marginTop: 28,
-                  letterSpacing: '-0.03em',
-                }}
+                className="display mt-7"
+                style={{ fontSize: 'clamp(64px, 9vw, 148px)', lineHeight: 0.88, letterSpacing: '-0.03em' }}
               >
                 Pink<br />
-                <em style={{ color: 'var(--pink-deep)' }}>Leaf.</em>
+                <em className="text-pink-deep">Leaf.</em>
               </h1>
-              <p
-                className="hand"
-                style={{
-                  fontSize: 30,
-                  color: 'var(--pink-deep)',
-                  marginTop: 16,
-                  whiteSpace: 'nowrap',
-                  lineHeight: 1.1,
-                }}
-              >
+              <p className="font-hand text-[30px] text-pink-deep mt-4 whitespace-nowrap leading-[1.1]">
                 under the gulmohar tree
               </p>
-              <p
-                style={{
-                  marginTop: 28,
-                  fontSize: 17,
-                  color: 'var(--ink-soft)',
-                  maxWidth: 460,
-                  lineHeight: 1.6,
-                }}
-              >
+              <p className="mt-7 text-[17px] text-ink-soft max-w-[460px] leading-[1.6]">
                 A 12-seat café for slow mornings — pour-over coffee, sourdough toasties, citrus jam from December oranges,
                 and music from a single, slightly-warped speaker. Open to guests and to anyone who finds their way to the gate.
               </p>
-              <div style={{ display: 'flex', gap: 12, marginTop: 32, flexWrap: 'wrap' }}>
-                <Link
-                  href="/dine"
-                  className="btn btn-primary btn-arrow"
-                  style={{ background: 'var(--pink-deep)', borderColor: 'var(--pink-deep)' }}
-                >
-                  Today&apos;s pour-overs
-                </Link>
-                <Link href="/" className="btn btn-ghost">Find the gate</Link>
+              <div className="flex flex-wrap gap-3 mt-8">
+                <Button variant="pink" arrow asChild>
+                  <Link href="/dine">Today&apos;s pour-overs</Link>
+                </Button>
+                <Button variant="ghost" asChild>
+                  <Link href="/">Find the gate</Link>
+                </Button>
               </div>
             </div>
-            <div style={{ position: 'relative' }}>
+            <div className="relative">
               <Placeholder
                 label="Pink Leaf — pink walls, cane chair, a single yellow flower in a clay vase"
                 ratio="4/5"
                 corner="P / L"
               />
               <div
-                style={{
-                  position: 'absolute',
-                  top: -16,
-                  right: -16,
-                  width: 120,
-                  height: 120,
-                  borderRadius: '50%',
-                  background: 'var(--pink)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--ink)',
-                  textAlign: 'center',
-                  padding: 16,
-                  transform: 'rotate(8deg)',
-                }}
+                className="absolute -top-4 -right-4 w-[120px] h-[120px] rounded-full bg-pink text-ink p-4 grid place-items-center text-center"
+                style={{ transform: 'rotate(8deg)' }}
               >
                 <div>
-                  <div className="hand" style={{ fontSize: 22, lineHeight: 1.1 }}>
+                  <div className="font-hand text-[22px] leading-[1.1]">
                     opens<br />at six!
                   </div>
-                  <div className="mono" style={{ fontSize: 8, marginTop: 4 }}>EXCEPT MONDAYS</div>
+                  <div className="mono text-[8px] mt-1">EXCEPT MONDAYS</div>
                 </div>
               </div>
             </div>
@@ -153,17 +99,13 @@ export default async function PinkLeafPage() {
       {/* Beans */}
       <section className="section-tight">
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 32 }}>
+          <div className="grid md:grid-cols-3 gap-8">
             {beans.map((b, i) => (
-              <div key={b._id} style={{ padding: '32px 0', borderTop: '1px solid var(--line)' }}>
-                <div className="mono" style={{ color: 'var(--pink-deep)' }}>BEAN N° 0{i + 1}</div>
-                <h3 className="display" style={{ fontSize: 32, marginTop: 16 }}>{b.name}</h3>
-                <p style={{ fontSize: 14, color: 'var(--ink-soft)', marginTop: 14, lineHeight: 1.6 }}>
-                  {b.description}
-                </p>
-                <div className="mono" style={{ marginTop: 20, color: 'var(--ink-mute)' }}>
-                  ROAST · {b.roastLevel?.toUpperCase()}
-                </div>
+              <div key={b._id} className="py-8 border-t border-line">
+                <div className="mono text-pink-deep">BEAN N° 0{i + 1}</div>
+                <h3 className="display text-[32px] mt-4">{b.name}</h3>
+                <p className="text-sm text-ink-soft mt-3.5 leading-[1.6]">{b.description}</p>
+                <div className="mono mt-5 text-ink-mute">ROAST · {b.roastLevel?.toUpperCase()}</div>
               </div>
             ))}
           </div>
@@ -171,47 +113,34 @@ export default async function PinkLeafPage() {
       </section>
 
       {/* Menu */}
-      <section
-        className="section-tight"
-        style={{
-          background: 'var(--bg-soft)',
-          borderTop: '1px solid var(--line)',
-          borderBottom: '1px solid var(--line)',
-        }}
-      >
+      <section className="section-tight bg-bg-soft border-y border-line">
         <div className="container">
-          <div style={{ textAlign: 'center', marginBottom: 56 }}>
-            <span className="eyebrow" style={{ color: 'var(--pink-deep)' }}>The board, today</span>
-            <h2 className="display" style={{ fontSize: 'clamp(40px, 6vw, 80px)', marginTop: 14 }}>Menu</h2>
+          <div className="text-center mb-14">
+            <span className="eyebrow text-pink-deep">The board, today</span>
+            <h2
+              className="display mt-3.5"
+              style={{ fontSize: 'clamp(40px, 6vw, 80px)' }}
+            >
+              Menu
+            </h2>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 48 }}>
+          <div className="grid md:grid-cols-3 gap-12">
             {sectionOrder
               .filter((k) => grouped[k]?.length)
               .map((k) => (
                 <div key={k}>
-                  <div className="hand" style={{ fontSize: 32, color: 'var(--pink-deep)' }}>
-                    {sectionLabels[k]}
-                  </div>
-                  <hr className="rule" style={{ margin: '12px 0 16px' }} />
+                  <div className="font-hand text-[32px] text-pink-deep">{sectionLabels[k]}</div>
+                  <hr className="h-px bg-line border-0 my-3" />
                   {grouped[k].map((item) => (
                     <div
                       key={item._id}
-                      style={{
-                        display: 'grid',
-                        gridTemplateColumns: '1fr auto',
-                        gap: 12,
-                        padding: '10px 0',
-                        borderBottom: '1px dotted var(--line)',
-                        alignItems: 'baseline',
-                      }}
+                      className="grid grid-cols-[1fr_auto] gap-3 items-baseline py-2.5 border-b border-dotted border-line"
                     >
                       <div>
-                        <div style={{ fontFamily: 'var(--serif)', fontSize: 18 }}>{item.name}</div>
-                        <div style={{ fontSize: 12, color: 'var(--ink-mute)', marginTop: 2 }}>
-                          {item.description}
-                        </div>
+                        <div className="font-serif text-lg">{item.name}</div>
+                        <div className="text-xs text-ink-mute mt-0.5">{item.description}</div>
                       </div>
-                      <div className="mono" style={{ fontVariantNumeric: 'tabular-nums' }}>₹{item.price}</div>
+                      <div className="mono tabular">₹{item.price}</div>
                     </div>
                   ))}
                 </div>
@@ -223,34 +152,22 @@ export default async function PinkLeafPage() {
       {/* Hours */}
       <section className="section-tight">
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 56 }}>
-            <div>
-              <SectionHead eyebrow="Find us" title="The hours, <em>kept short.</em>" />
-            </div>
+          <div className="grid md:grid-cols-[1fr_1.4fr] gap-14">
+            <SectionHead eyebrow="Find us" title="The hours, <em>kept short.</em>" />
             <div>
               <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'auto 1fr',
-                  gap: '14px 32px',
-                  maxWidth: 540,
-                }}
+                className="grid grid-cols-[auto_1fr] gap-x-8 gap-y-3.5 max-w-[540px]"
               >
                 {(hoursData?.schedule ?? fallbackCafeHours.schedule).map((row) => (
                   <Fragment key={row.day}>
-                    <div style={{ fontFamily: 'var(--serif)', fontSize: 24 }}>{row.day}</div>
-                    <div className="mono" style={{ alignSelf: 'center', color: 'var(--ink-soft)' }}>
+                    <div className="font-serif text-2xl">{row.day}</div>
+                    <div className="mono self-center text-ink-soft">
                       {row.hours}{row.note ? ` · ${row.note}` : ''}
                     </div>
                   </Fragment>
                 ))}
               </div>
-              <p
-                className="hand"
-                style={{ fontSize: 28, color: 'var(--pink-deep)', marginTop: 40 }}
-              >
-                see you tomorrow x
-              </p>
+              <p className="font-hand text-[28px] text-pink-deep mt-10">see you tomorrow x</p>
             </div>
           </div>
         </div>

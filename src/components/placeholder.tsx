@@ -1,25 +1,28 @@
 import { CSSProperties, ReactNode } from 'react';
+import { cn } from '@/lib/utils';
 
 interface PlaceholderProps {
   label: string;
   ratio?: string;
   corner?: string;
-  style?: CSSProperties;
   className?: string;
+  style?: CSSProperties;
   children?: ReactNode;
 }
 
-export default function Placeholder({
+// Hatched, captioned stand-in for real photography. Captions describe the intended shot
+// so a content editor can drop in the right image later.
+export function Placeholder({
   label,
   ratio = '4/3',
   corner,
-  style = {},
-  className = '',
+  className,
+  style,
   children,
 }: PlaceholderProps) {
   return (
     <div
-      className={`ph ${className}`}
+      className={cn('ph', className)}
       data-label={label}
       style={{ aspectRatio: ratio, ...style }}
     >

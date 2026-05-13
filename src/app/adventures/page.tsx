@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
-import Placeholder from '@/components/Placeholder';
-import SectionHead from '@/components/SectionHead';
+import { Placeholder } from '@/components/placeholder';
+import { SectionHead } from '@/components/section-head';
+import { Card, CardContent } from '@/components/ui/card';
 import { fetchOrFallback, queries } from '@/lib/sanity';
 import { fallbackAdventures } from '@/lib/data';
 
@@ -37,34 +38,22 @@ export default async function AdventuresPage() {
   return (
     <>
       {/* Banner */}
-      <section style={{ position: 'relative', padding: 0 }}>
+      <section className="relative">
         <Placeholder
           label="Wide — open jeep on a red-dirt forest track at dawn"
           ratio="auto"
           corner="N° 03"
-          style={{
-            height: '60vh',
-            minHeight: 400,
-            borderRadius: 0,
-            border: 0,
-            borderTop: '1px solid var(--line)',
-            borderBottom: '1px solid var(--line)',
-          }}
+          className="!rounded-none !border-0 border-y border-line min-h-[400px] h-[60vh]"
         >
           <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              display: 'flex',
-              alignItems: 'center',
-              padding: '0 clamp(40px, 8vw, 120px)',
-            }}
+            className="absolute inset-0 flex items-center"
+            style={{ padding: '0 clamp(40px, 8vw, 120px)' }}
           >
-            <div style={{ maxWidth: 600 }}>
+            <div className="max-w-[600px]">
               <span className="eyebrow">Adventures</span>
               <h1
-                className="display"
-                style={{ fontSize: 'clamp(48px, 7vw, 96px)', marginTop: 16, lineHeight: 1 }}
+                className="display mt-4 leading-none"
+                style={{ fontSize: 'clamp(48px, 7vw, 96px)' }}
               >
                 Walk it. Drive it. <em>Sit and listen to it.</em>
               </h1>
@@ -76,90 +65,52 @@ export default async function AdventuresPage() {
       {/* Adventure cards */}
       <section className="section">
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 28 }}>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-7">
             {adventures.map((a) => (
-              <article
-                key={a._id}
-                className="card"
-                style={{ padding: 0, display: 'flex', flexDirection: 'column' }}
-              >
+              <Card key={a._id} className="flex flex-col p-0">
                 <Placeholder
                   label={`${a.title} — ${a.subtitle}`}
                   ratio="4/3"
                   corner={a.number}
-                  style={{
-                    borderRadius: 0,
-                    border: 0,
-                    borderBottom: '1px solid var(--line)',
-                  }}
+                  className="!rounded-none !border-0 border-b border-line"
                 />
-                <div style={{ padding: 28, display: 'flex', flexDirection: 'column', flex: 1 }}>
-                  <div
-                    style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-                  >
+                <CardContent>
+                  <div className="flex justify-between items-center">
                     <span className="num">{a.number}</span>
-                    <span className="mono" style={{ color: 'var(--ink-mute)' }}>
+                    <span className="mono text-ink-mute">
                       {a.duration} · {a.startTime}
                     </span>
                   </div>
-                  <h3 className="display" style={{ fontSize: 32, marginTop: 14, lineHeight: 1.05 }}>
-                    {a.title}
-                  </h3>
-                  <p className="italic" style={{ fontSize: 16, color: 'var(--moss)', marginTop: 4 }}>{a.subtitle}</p>
-                  <p
-                    style={{
-                      fontSize: 14,
-                      color: 'var(--ink-soft)',
-                      marginTop: 16,
-                      lineHeight: 1.55,
-                      flex: 1,
-                    }}
-                  >
+                  <h3 className="display text-[32px] mt-3.5 leading-[1.05]">{a.title}</h3>
+                  <p className="italic-display text-base text-moss mt-1">{a.subtitle}</p>
+                  <p className="text-sm text-ink-soft mt-4 leading-[1.55] flex-1">
                     {a.description}
                   </p>
-                  <div
-                    className="mono"
-                    style={{
-                      marginTop: 22,
-                      paddingTop: 18,
-                      borderTop: '1px dashed var(--line)',
-                      color: 'var(--ink-mute)',
-                    }}
-                  >
+                  <div className="mono mt-[22px] pt-[18px] border-t border-dashed border-line text-ink-mute">
                     {a.priceNote}
                   </div>
-                </div>
-              </article>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
       </section>
 
       {/* Daily rhythm */}
-      <section
-        className="section-tight"
-        style={{ background: 'var(--bg-soft)', borderTop: '1px solid var(--line)' }}
-      >
-        <div className="container" style={{ display: 'grid', gridTemplateColumns: '1fr 1.6fr', gap: 56 }}>
+      <section className="section-tight bg-bg-soft border-t border-line">
+        <div className="container grid md:grid-cols-[1fr_1.6fr] gap-14">
           <SectionHead eyebrow="Daily rhythm" title="A day, <em>roughly.</em>" />
           <div>
             {dailyRhythm.map(([time, body]) => (
               <div
                 key={time}
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: '100px 1fr',
-                  gap: 24,
-                  padding: '18px 0',
-                  borderTop: '1px solid var(--line)',
-                  alignItems: 'baseline',
-                }}
+                className="grid grid-cols-[100px_1fr] gap-6 py-[18px] border-t border-line items-baseline"
               >
-                <span className="mono" style={{ color: 'var(--ink-mute)' }}>{time}</span>
-                <p style={{ fontSize: 16, color: 'var(--ink-soft)' }}>{body}</p>
+                <span className="mono text-ink-mute">{time}</span>
+                <p className="text-base text-ink-soft">{body}</p>
               </div>
             ))}
-            <div style={{ borderTop: '1px solid var(--line)' }} />
+            <div className="border-t border-line" />
           </div>
         </div>
       </section>

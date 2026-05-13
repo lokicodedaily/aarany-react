@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
-import Placeholder from '@/components/Placeholder';
-import SectionHead from '@/components/SectionHead';
+import { Placeholder } from '@/components/placeholder';
+import { SectionHead } from '@/components/section-head';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 import { fetchOrFallback, queries } from '@/lib/sanity';
 import { fallbackRooms } from '@/lib/data';
 
@@ -27,7 +30,7 @@ export default async function StayPage() {
 
   return (
     <>
-      <section style={{ padding: '80px 0 40px' }}>
+      <section className="pt-20 pb-10">
         <div className="container">
           <SectionHead
             num="N° 02"
@@ -38,23 +41,19 @@ export default async function StayPage() {
         </div>
       </section>
 
-      <section style={{ padding: '0 0 80px' }}>
+      <section className="pb-20">
         <div className="container">
           {rooms.map((r, i) => {
             const reverse = i % 2 !== 0;
             return (
               <article
                 key={r._id}
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: reverse ? '1fr 1.15fr' : '1.15fr 1fr',
-                  gap: 56,
-                  alignItems: 'center',
-                  padding: '60px 0',
-                  borderTop: '1px solid var(--line)',
-                }}
+                className={cn(
+                  'grid md:grid-cols-[1.15fr_1fr] gap-14 items-center py-[60px] border-t border-line',
+                  reverse && 'md:grid-cols-[1fr_1.15fr]'
+                )}
               >
-                <div style={{ order: reverse ? 2 : 1 }}>
+                <div className={reverse ? 'md:order-2' : 'md:order-1'}>
                   <Placeholder
                     label={`Villa ${r.number} — interior, light streaming through cane blinds`}
                     ratio="5/4"
@@ -62,85 +61,45 @@ export default async function StayPage() {
                   />
                 </div>
                 <div
-                  style={{
-                    order: reverse ? 1 : 2,
-                    padding: reverse ? '0 24px 0 0' : '0 0 0 24px',
-                  }}
+                  className={cn(
+                    reverse ? 'md:order-1 md:pr-6' : 'md:order-2 md:pl-6'
+                  )}
                 >
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 16 }}>
+                  <div className="flex items-baseline gap-4">
                     <span className="num">N° {r.number}</span>
-                    <span className="mono" style={{ color: 'var(--ink-mute)' }}>
+                    <span className="mono text-ink-mute">
                       SLEEPS {r.sleeps} · {r.sizeSqM} M²
                     </span>
                   </div>
                   <h3
-                    className="display"
-                    style={{ fontSize: 'clamp(36px, 4.5vw, 64px)', marginTop: 16, lineHeight: 1 }}
+                    className="display mt-4 leading-none"
+                    style={{ fontSize: 'clamp(36px, 4.5vw, 64px)' }}
                   >
                     {r.name}
                   </h3>
-                  <p className="italic" style={{ fontSize: 22, color: 'var(--moss)', marginTop: 6 }}>{r.subName}</p>
-                  <p style={{ marginTop: 20, color: 'var(--ink-soft)', fontSize: 16, maxWidth: 480 }}>
-                    {r.description}
-                  </p>
-                  <ul
-                    style={{
-                      listStyle: 'none',
-                      padding: 0,
-                      margin: '24px 0 0',
-                      display: 'grid',
-                      gridTemplateColumns: '1fr 1fr',
-                      gap: 8,
-                      maxWidth: 460,
-                    }}
-                  >
+                  <p className="italic-display text-[22px] text-moss mt-1.5">{r.subName}</p>
+                  <p className="mt-5 text-ink-soft text-base max-w-[480px]">{r.description}</p>
+                  <ul className="list-none p-0 mt-6 grid grid-cols-2 gap-2 max-w-[460px]">
                     {(r.features ?? []).map((f) => (
                       <li
                         key={f}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: 8,
-                          fontSize: 13,
-                          color: 'var(--ink-soft)',
-                        }}
+                        className="flex items-center gap-2 text-[13px] text-ink-soft"
                       >
-                        <span
-                          style={{
-                            width: 6,
-                            height: 6,
-                            borderRadius: '50%',
-                            background: 'var(--moss)',
-                            flex: '0 0 auto',
-                          }}
-                        />
+                        <span className="w-1.5 h-1.5 rounded-full bg-moss shrink-0" />
                         {f}
                       </li>
                     ))}
                   </ul>
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'baseline',
-                      gap: 24,
-                      marginTop: 36,
-                      paddingTop: 24,
-                      borderTop: '1px solid var(--line)',
-                    }}
-                  >
+                  <div className="flex items-baseline gap-6 mt-9 pt-6 border-t border-line">
                     <div>
-                      <span className="mono" style={{ color: 'var(--ink-mute)', fontSize: 10 }}>PER NIGHT</span>
-                      <div className="display" style={{ fontSize: 40, lineHeight: 1, marginTop: 4 }}>
+                      <span className="mono text-ink-mute text-[10px]">PER NIGHT</span>
+                      <div className="display text-[40px] leading-none mt-1">
                         ₹{r.pricePerNight.toLocaleString('en-IN')}
                       </div>
                     </div>
-                    <a
-                      href="mailto:stay@aarany.in"
-                      className="btn btn-ghost btn-arrow"
-                      style={{ marginLeft: 'auto' }}
-                    >
-                      Hold this villa
-                    </a>
+                    <Button variant="ghost" arrow asChild className="ml-auto">
+                      <a href="mailto:stay@aarany.in">Hold this villa</a>
+                    </Button>
                   </div>
                 </div>
               </article>
@@ -150,96 +109,57 @@ export default async function StayPage() {
       </section>
 
       {/* Pricing example */}
-      <section
-        className="section-tight"
-        style={{ background: 'var(--bg-soft)', borderTop: '1px solid var(--line)' }}
-      >
+      <section className="section-tight bg-bg-soft border-t border-line">
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 56, alignItems: 'start' }}>
+          <div className="grid md:grid-cols-[1fr_1.4fr] gap-14 items-start">
             <div>
               <SectionHead eyebrow="Worked example" title="How a stay <em>adds up.</em>" />
-              <p style={{ marginTop: 28, color: 'var(--ink-soft)', fontSize: 15, maxWidth: 360 }}>
+              <p className="mt-7 text-ink-soft text-[15px] max-w-[360px]">
                 A real booking, taken from our ledger this week. Take all three villas as a buy-out and the discount
                 applies automatically.
               </p>
             </div>
-            <div className="card" style={{ padding: '36px 40px' }}>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'baseline',
-                  marginBottom: 24,
-                }}
-              >
-                <span className="mono" style={{ color: 'var(--ink-mute)' }}>BOOKING SAMPLE · #AAR-0510</span>
-                <span className="mono" style={{ color: 'var(--ink-mute)' }}>1 NIGHT</span>
-              </div>
-              {[
-                ['Pool Villa 1 · The Mahua', '₹6,500'],
-                ['Pool Villa 2 · The Gulmohar', '₹6,500'],
-                ['Pool Villa 3 · The Tendu', '₹6,500'],
-              ].map(([label, amount]) => (
-                <div
-                  key={label}
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    padding: '12px 0',
-                    borderBottom: '1px dashed var(--line)',
-                  }}
-                >
-                  <span>{label}</span>
-                  <span style={{ fontVariantNumeric: 'tabular-nums' }}>{amount}</span>
+            <Card>
+              <div className="p-[36px_40px]">
+                <div className="flex justify-between items-baseline mb-6">
+                  <span className="mono text-ink-mute">BOOKING SAMPLE · #AAR-0510</span>
+                  <span className="mono text-ink-mute">1 NIGHT</span>
                 </div>
-              ))}
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  padding: '16px 0',
-                  borderBottom: '1px solid var(--line)',
-                  fontWeight: 500,
-                }}
-              >
-                <span>Subtotal · 3 villas</span>
-                <span style={{ fontVariantNumeric: 'tabular-nums' }}>₹19,500</span>
-              </div>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  padding: '16px 0',
-                  color: 'var(--terracotta)',
-                }}
-              >
-                <div>
-                  <div>Goodwill discount</div>
-                  <div className="mono" style={{ fontSize: 10, color: 'var(--ink-mute)', marginTop: 2 }}>
-                    RESTAURANT RENOVATION · −20%
+                {[
+                  ['Pool Villa 1 · The Mahua', '₹6,500'],
+                  ['Pool Villa 2 · The Gulmohar', '₹6,500'],
+                  ['Pool Villa 3 · The Tendu', '₹6,500'],
+                ].map(([label, amount]) => (
+                  <div
+                    key={label}
+                    className="flex justify-between py-3 border-b border-dashed border-line"
+                  >
+                    <span>{label}</span>
+                    <span className="tabular">{amount}</span>
                   </div>
+                ))}
+                <div className="flex justify-between py-4 border-b border-line font-medium">
+                  <span>Subtotal · 3 villas</span>
+                  <span className="tabular">₹19,500</span>
                 </div>
-                <span style={{ fontVariantNumeric: 'tabular-nums' }}>−₹3,900</span>
+                <div className="flex justify-between py-4 text-terracotta">
+                  <div>
+                    <div>Goodwill discount</div>
+                    <div className="mono text-[10px] text-ink-mute mt-0.5">
+                      RESTAURANT RENOVATION · −20%
+                    </div>
+                  </div>
+                  <span className="tabular">−₹3,900</span>
+                </div>
+                <div className="flex justify-between pt-5 pb-1 border-t border-ink mt-2">
+                  <span className="display text-2xl">Final payable</span>
+                  <span className="display text-[32px] tabular">₹15,600</span>
+                </div>
+                <p className="mono mt-6 text-ink-mute text-[10px] leading-[1.6]">
+                  CHECK-IN SUN 10 MAY 2026 · CHECK-OUT MON 11 MAY 2026 · BOOKED 07 MAY 2026
+                </p>
               </div>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  padding: '20px 0 4px',
-                  borderTop: '1px solid var(--ink)',
-                  marginTop: 8,
-                }}
-              >
-                <span className="display" style={{ fontSize: 24 }}>Final payable</span>
-                <span className="display" style={{ fontSize: 32, fontVariantNumeric: 'tabular-nums' }}>₹15,600</span>
-              </div>
-              <p
-                className="mono"
-                style={{ marginTop: 24, color: 'var(--ink-mute)', fontSize: 10, lineHeight: 1.6 }}
-              >
-                CHECK-IN SUN 10 MAY 2026 · CHECK-OUT MON 11 MAY 2026 · BOOKED 07 MAY 2026
-              </p>
-            </div>
+            </Card>
           </div>
         </div>
       </section>

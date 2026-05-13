@@ -1,7 +1,37 @@
 import type { Metadata } from 'next';
-import '@/styles/global.css';
-import Nav from '@/components/Nav';
-import Footer from '@/components/Footer';
+import { Cormorant_Garamond, DM_Sans, JetBrains_Mono, Caveat } from 'next/font/google';
+import './globals.css';
+import { Nav } from '@/components/nav';
+import { Footer } from '@/components/footer';
+
+const serif = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-serif',
+  display: 'swap',
+});
+
+const sans = DM_Sans({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-sans',
+  display: 'swap',
+});
+
+const mono = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  variable: '--font-mono',
+  display: 'swap',
+});
+
+const hand = Caveat({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  variable: '--font-hand',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'AARANY · Jungle Resort & Adventure',
@@ -18,10 +48,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className={`${serif.variable} ${sans.variable} ${mono.variable} ${hand.variable}`}
+    >
       <body>
         <Nav />
-        <main className="page-fade">{children}</main>
+        <main className="animate-fade-in">{children}</main>
         <Footer />
       </body>
     </html>

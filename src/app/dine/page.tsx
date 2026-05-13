@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import Placeholder from '@/components/Placeholder';
-import SectionHead from '@/components/SectionHead';
+import { Placeholder } from '@/components/placeholder';
+import { SectionHead } from '@/components/section-head';
+import { Button } from '@/components/ui/button';
 import { fetchOrFallback, queries } from '@/lib/sanity';
 import { fallbackAaranyMenu, fallbackRenovationNotice } from '@/lib/data';
 
@@ -33,23 +34,20 @@ export default async function DinePage() {
 
   return (
     <>
-      {/* Header */}
-      <section style={{ padding: '80px 0 40px' }}>
+      <section className="pt-20 pb-10">
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 56, alignItems: 'end' }}>
+          <div className="grid md:grid-cols-2 gap-14 items-end">
+            <SectionHead
+              num="N° 04"
+              eyebrow="The Restaurant"
+              title="From the kitchen, <em>slowly.</em>"
+              kicker="A short menu that moves with the season. Mostly Bundelkhandi, some travels, all from the garden where it can be."
+            />
             <div>
-              <SectionHead
-                num="N° 04"
-                eyebrow="The Restaurant"
-                title="From the kitchen, <em>slowly.</em>"
-                kicker="A short menu that moves with the season. Mostly Bundelkhandi, some travels, all from the garden where it can be."
-              />
-            </div>
-            <div>
-              <p className="hand" style={{ fontSize: 32, color: 'var(--moss)', marginBottom: 8 }}>
+              <p className="font-hand text-[32px] text-moss mb-2">
                 &ldquo;come hungry, leave slowly&rdquo;
               </p>
-              <p className="mono" style={{ color: 'var(--ink-mute)' }}>OPEN · 07:00 — 22:30 · DAILY</p>
+              <p className="mono text-ink-mute">OPEN · 07:00 — 22:30 · DAILY</p>
             </div>
           </div>
         </div>
@@ -57,55 +55,29 @@ export default async function DinePage() {
 
       {/* Renovation notice */}
       {notice?.active && (
-        <section style={{ padding: '0 0 60px' }}>
+        <section className="pb-14">
           <div className="container">
             <div
-              style={{
-                border: '1px solid var(--terracotta)',
-                background: 'color-mix(in oklab, var(--terracotta) 8%, var(--bg))',
-                borderRadius: 'var(--radius)',
-                padding: '32px 40px',
-                display: 'grid',
-                gridTemplateColumns: 'auto 1fr auto',
-                gap: 32,
-                alignItems: 'center',
-              }}
+              className="border border-terracotta rounded p-[32px_40px] grid md:grid-cols-[auto_1fr_auto] gap-8 items-center"
+              style={{ background: 'color-mix(in oklab, hsl(var(--terracotta)) 8%, hsl(var(--bg)))' }}
             >
               <div
-                style={{
-                  width: 48,
-                  height: 48,
-                  borderRadius: '50%',
-                  background: 'var(--terracotta)',
-                  color: 'var(--bg)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontFamily: 'var(--serif)',
-                  fontSize: 28,
-                  lineHeight: 1,
-                }}
+                className="w-12 h-12 rounded-full bg-terracotta text-bg font-serif text-[28px] leading-none grid place-items-center"
               >
                 i
               </div>
               <div>
-                <div className="mono" style={{ color: 'var(--terracotta)', marginBottom: 8 }}>
-                  {notice.headline}
-                </div>
-                <p style={{ fontSize: 17, color: 'var(--ink)', lineHeight: 1.5, maxWidth: 720 }}>
+                <div className="mono text-terracotta mb-2">{notice.headline}</div>
+                <p className="text-[17px] text-ink leading-[1.5] max-w-[720px]">
                   {notice.body ?? fallbackRenovationNotice.body}
                 </p>
               </div>
-              <div style={{ textAlign: 'right' }}>
-                <div
-                  className="display"
-                  style={{ fontSize: 56, color: 'var(--terracotta)', lineHeight: 1 }}
-                >
-                  −{notice.discountPercent}<span style={{ fontSize: 32 }}>%</span>
+              <div className="text-right">
+                <div className="display text-terracotta leading-none" style={{ fontSize: 56 }}>
+                  −{notice.discountPercent}
+                  <span style={{ fontSize: 32 }}>%</span>
                 </div>
-                <div className="mono" style={{ color: 'var(--ink-mute)', fontSize: 10, marginTop: 6 }}>
-                  APPLIED AUTOMATICALLY
-                </div>
+                <div className="mono text-ink-mute text-[10px] mt-1.5">APPLIED AUTOMATICALLY</div>
               </div>
             </div>
           </div>
@@ -115,7 +87,7 @@ export default async function DinePage() {
       {/* Menu */}
       <section className="section-tight">
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 1fr', gap: 64, alignItems: 'start' }}>
+          <div className="grid md:grid-cols-[1.1fr_1fr] gap-16 items-start">
             <Placeholder
               label="Open kitchen — copper pans, a flame, a marble counter"
               ratio="4/5"
@@ -123,43 +95,29 @@ export default async function DinePage() {
             />
             <div>
               <span className="eyebrow">A short menu, this week</span>
-              <h3 className="display" style={{ fontSize: 44, marginTop: 14, lineHeight: 1 }}>What&apos;s cooking</h3>
-              <div style={{ marginTop: 32 }}>
+              <h3 className="display text-[44px] mt-3.5 leading-none">What&apos;s cooking</h3>
+              <div className="mt-8">
                 {sectionOrder
                   .filter((key) => grouped[key]?.length)
                   .map((key, i) => (
-                    <div key={key} style={i === 0 ? undefined : { marginTop: 36 }}>
-                      <div className="mono" style={{ color: 'var(--moss)', marginBottom: 12 }}>
-                        — {sectionLabels[key].toUpperCase()} —
-                      </div>
+                    <div key={key} className={i === 0 ? '' : 'mt-9'}>
+                      <div className="mono text-moss mb-3">— {sectionLabels[key].toUpperCase()} —</div>
                       {grouped[key].map((item) => (
                         <div
                           key={item._id}
-                          style={{
-                            display: 'grid',
-                            gridTemplateColumns: '1fr auto',
-                            gap: 16,
-                            alignItems: 'baseline',
-                            padding: '10px 0',
-                            borderBottom: '1px dashed var(--line)',
-                          }}
+                          className="grid grid-cols-[1fr_auto] gap-4 items-baseline py-2.5 border-b border-dashed border-line"
                         >
                           <div>
-                            <div style={{ fontFamily: 'var(--serif)', fontSize: 20 }}>{item.name}</div>
-                            <div style={{ fontSize: 13, color: 'var(--ink-mute)', marginTop: 2 }}>
-                              {item.description}
-                            </div>
+                            <div className="font-serif text-xl">{item.name}</div>
+                            <div className="text-[13px] text-ink-mute mt-0.5">{item.description}</div>
                           </div>
-                          <div className="mono" style={{ fontVariantNumeric: 'tabular-nums' }}>₹{item.price}</div>
+                          <div className="mono tabular">₹{item.price}</div>
                         </div>
                       ))}
                     </div>
                   ))}
               </div>
-              <p
-                className="mono"
-                style={{ color: 'var(--ink-mute)', fontSize: 10, marginTop: 32, lineHeight: 1.6 }}
-              >
+              <p className="mono text-ink-mute text-[10px] mt-8 leading-[1.6]">
                 ALL PRICES IN ₹ · TAXES INCLUDED · MENU ROTATES WITH WHATEVER THE GARDEN IS DOING
               </p>
             </div>
@@ -168,31 +126,20 @@ export default async function DinePage() {
       </section>
 
       {/* Pink Leaf cross-link */}
-      <section
-        className="section-tight"
-        style={{ background: 'var(--bg-soft)', borderTop: '1px solid var(--line)' }}
-      >
-        <div className="container" style={{ textAlign: 'center' }}>
-          <span className="eyebrow" style={{ color: 'var(--pink-deep)' }}>
-            For coffee, cake &amp; quiet mornings
-          </span>
-          <h3 className="display" style={{ fontSize: 56, marginTop: 16 }}>
+      <section className="section-tight bg-bg-soft border-t border-line">
+        <div className="container text-center">
+          <span className="eyebrow text-pink-deep">For coffee, cake &amp; quiet mornings</span>
+          <h3 className="display text-[56px] mt-4">
             Visit our café — <em>Pink Leaf</em>.
           </h3>
-          <p
-            style={{
-              marginTop: 18,
-              color: 'var(--ink-soft)',
-              maxWidth: 540,
-              marginLeft: 'auto',
-              marginRight: 'auto',
-            }}
-          >
+          <p className="mt-4 text-ink-soft max-w-[540px] mx-auto">
             A separate door, a separate kitchen, the same gulmohar tree.
           </p>
-          <Link href="/pink-leaf" className="btn btn-primary btn-arrow" style={{ marginTop: 32 }}>
-            Pink Leaf Café
-          </Link>
+          <div className="mt-8 flex justify-center">
+            <Button variant="primary" arrow asChild>
+              <Link href="/pink-leaf">Pink Leaf Café</Link>
+            </Button>
+          </div>
         </div>
       </section>
     </>
