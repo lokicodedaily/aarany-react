@@ -9,6 +9,7 @@ import "./globals.css";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
 import { NavigationProgress } from "@/components/navigation-progress";
+import { Analytics } from "@vercel/analytics/react";
 
 const serif = Cormorant_Garamond({
   subsets: ["latin"],
@@ -69,6 +70,7 @@ export default function RootLayout({
         <Nav />
         <main>{children}</main>
         <Footer />
+        <Analytics />
       </body>
     </html>
   );
