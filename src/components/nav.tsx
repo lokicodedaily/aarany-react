@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { Volume2, VolumeOff } from 'lucide-react';
 import { LeafMark } from './leaf-mark';
 import { Button } from './ui/button';
 
@@ -23,12 +24,43 @@ function isActive(href: string, pathname: string) {
 export function Nav() {
   const pathname = usePathname() ?? '/';
   const [scrolled, setScrolled] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  useEffect(() => {
+    const audio = new Audio('/ambient.mp3');
+    audio.loop = true;
+    audio.volume = 0.35;
+    audioRef.current = audio;
+
+    // Start playing on first user interaction with the page
+    const onFirstInteraction = () => {
+      audio.play().then(() => setPlaying(true)).catch(() => {});
+      document.removeEventListener('click', onFirstInteraction);
+    };
+    document.addEventListener('click', onFirstInteraction);
+
+    return () => {
+      audio.pause();
+      document.removeEventListener('click', onFirstInteraction);
+    };
+  }, []);
+
+  const toggleSound = () => {
+    if (!audioRef.current) return;
+    if (playing) {
+      audioRef.current.pause();
+      setPlaying(false);
+    } else {
+      audioRef.current.play().then(() => setPlaying(true)).catch(() => {});
+    }
+  };
 
   return (
     <nav className={scrolled ? 'nav-shell nav-scrolled' : 'nav-shell'}>
@@ -55,6 +87,14 @@ export function Nav() {
             </Link>
           ))}
         </div>
+
+        <button
+          onClick={toggleSound}
+          aria-label={playing ? 'Mute ambient sound' : 'Play ambient sound'}
+          className="p-2 text-ink-mute hover:text-ink transition-colors"
+        >
+          {playing ? <Volume2 size={16} /> : <VolumeOff size={16} />}
+        </button>
 
         <Button variant="nav" size="sm" asChild>
           <a href="https://www.makemytrip.com/hotels/aarany_jungle_resort_and_adventure-details-sonkach.html" target="_blank" rel="noopener noreferrer">Plan a Stay</a>

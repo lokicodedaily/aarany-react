@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 import { fetchOrFallback, queries } from '@/lib/sanity';
 import { fallbackTestimonial } from '@/lib/data';
 import { blurData } from '@/lib/image-placeholders';
+import { ParallaxHero } from '@/components/parallax-hero';
 
 export const metadata: Metadata = {
   title: 'AARANY · Jungle Resort & Adventure · Bhopal, Madhya Pradesh',
@@ -73,15 +74,10 @@ export default async function HomePage() {
           </div>
 
           <div className="relative w-full mt-2 overflow-hidden rounded" style={{ aspectRatio: '21/9' }}>
-            <Image
+            <ParallaxHero
               src="/HomeHero.webp"
               alt="Pool villas at dusk, jungle beyond, warm lanterns — AARANY Resort"
-              fill
-              priority
-              placeholder="blur"
               blurDataURL={blurData['/HomeHero.webp']}
-              className="object-cover"
-              sizes="100vw"
             />
           </div>
 
