@@ -37,7 +37,7 @@ export function Nav() {
 
   const closeMenu = () => {
     setMenuClosing(true);
-    setTimeout(() => { setMenuOpen(false); setMenuClosing(false); }, 420);
+    setTimeout(() => { setMenuOpen(false); setMenuClosing(false); }, 320);
   };
 
   // Close menu on route change
@@ -143,7 +143,8 @@ export function Nav() {
           style={{
             background: 'hsl(120 25% 13%)',
             top: '68px',
-            animation: `${menuClosing ? 'menu-exit' : 'menu-enter'} 420ms ease forwards`,
+            transformOrigin: 'top right',
+            animation: `${menuClosing ? 'menu-exit' : 'menu-enter'} 320ms cubic-bezier(0.16, 1, 0.3, 1) forwards`,
           }}
         >
           <div className="flex flex-col flex-1 container py-10">
@@ -154,13 +155,13 @@ export function Nav() {
                   href={l.href}
                   aria-current={isActive(l.href, pathname) ? 'page' : undefined}
                   className="flex items-baseline justify-between py-5 border-b border-bg/10 group"
-                  style={{
-                    animationName: menuClosing ? 'menu-link-out' : 'menu-link-in',
-                    animationDuration: '240ms',
+                  style={menuClosing ? { opacity: 1 } : {
+                    animationName: 'menu-link-in',
+                    animationDuration: '320ms',
                     animationTimingFunction: 'ease',
                     animationFillMode: 'forwards',
-                    animationDelay: `${i * 40}ms`,
-                    opacity: menuClosing ? 1 : 0,
+                    animationDelay: `${i * 45}ms`,
+                    opacity: 0,
                   }}
                 >
                   <span
