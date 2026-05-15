@@ -168,14 +168,15 @@ export default async function HomePage() {
             title="What you&apos;ll find <em>here.</em>"
             kicker="A short list, on purpose. We do a few things and try to do them well."
           />
-          <div className="grid grid-cols-4 mt-16 border-t border-line">
+          <div className="grid grid-cols-2 md:grid-cols-4 mt-16 border-t border-line">
             {highlights.map((it, i) => (
               <Reveal
                 key={it.num}
                 delay={i * 90}
                 className={cn(
-                  'px-7 py-8 border-b border-line',
-                  i < highlights.length - 1 && 'border-r border-line'
+                  'px-5 md:px-7 py-8 border-b border-line',
+                  i % 2 === 0 && 'border-r border-line',
+                  i % 2 === 1 && i < highlights.length - 1 && 'md:border-r',
                 )}
               >
                 <span className="num">{it.num}</span>
