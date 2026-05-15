@@ -7,38 +7,37 @@ const config: Config = {
     './src/components/**/*.{ts,tsx}',
     './src/lib/**/*.{ts,tsx}',
   ],
+  // We define `.container` ourselves in globals.css so it can cap at 1320px
+  // on every viewport (matching the prototype) instead of only at 2xl.
+  corePlugins: { container: false },
   theme: {
-    container: {
-      center: true,
-      padding: { DEFAULT: '1.5rem', md: '3rem' },
-      screens: { '2xl': '1320px' },
-    },
     extend: {
       colors: {
-        // Earthy luxury safari palette — read directly via Tailwind utilities
-        // (e.g. bg-bg, text-ink) so designers can compose without remembering hex.
-        bg:          'hsl(var(--bg))',
-        'bg-soft':   'hsl(var(--bg-soft))',
-        ink:         'hsl(var(--ink))',
-        'ink-soft':  'hsl(var(--ink-soft))',
-        'ink-mute':  'hsl(var(--ink-mute))',
-        line:        'hsl(var(--line))',
-        moss:        'hsl(var(--moss))',
-        forest:      'hsl(var(--forest))',
-        terracotta:  'hsl(var(--terracotta))',
-        sand:        'hsl(var(--sand))',
-        pink:        'hsl(var(--pink))',
-        'pink-deep': 'hsl(var(--pink-deep))',
-        // shadcn semantic aliases — map to our palette
-        background:  'hsl(var(--bg))',
-        foreground:  'hsl(var(--ink))',
-        muted:       { DEFAULT: 'hsl(var(--bg-soft))', foreground: 'hsl(var(--ink-mute))' },
-        border:      'hsl(var(--line))',
-        primary:     { DEFAULT: 'hsl(var(--ink))', foreground: 'hsl(var(--bg))' },
-        secondary:   { DEFAULT: 'hsl(var(--bg-soft))', foreground: 'hsl(var(--ink))' },
-        accent:      { DEFAULT: 'hsl(var(--moss))', foreground: 'hsl(var(--bg))' },
-        destructive: { DEFAULT: 'hsl(var(--terracotta))', foreground: 'hsl(var(--bg))' },
-        ring:        'hsl(var(--ink))',
+        // Each token uses `hsl(var(--x) / <alpha-value>)` so Tailwind's opacity
+        // modifiers (bg-bg/15, text-ink/60) compose correctly. Plain
+        // `hsl(var(--x))` would break under any opacity utility.
+        bg:          'hsl(var(--bg) / <alpha-value>)',
+        'bg-soft':   'hsl(var(--bg-soft) / <alpha-value>)',
+        ink:         'hsl(var(--ink) / <alpha-value>)',
+        'ink-soft':  'hsl(var(--ink-soft) / <alpha-value>)',
+        'ink-mute':  'hsl(var(--ink-mute) / <alpha-value>)',
+        line:        'hsl(var(--line) / <alpha-value>)',
+        moss:        'hsl(var(--moss) / <alpha-value>)',
+        forest:      'hsl(var(--forest) / <alpha-value>)',
+        terracotta:  'hsl(var(--terracotta) / <alpha-value>)',
+        sand:        'hsl(var(--sand) / <alpha-value>)',
+        pink:        'hsl(var(--pink) / <alpha-value>)',
+        'pink-deep': 'hsl(var(--pink-deep) / <alpha-value>)',
+        // shadcn semantic aliases — point at the same palette.
+        background:  'hsl(var(--bg) / <alpha-value>)',
+        foreground:  'hsl(var(--ink) / <alpha-value>)',
+        muted:       { DEFAULT: 'hsl(var(--bg-soft) / <alpha-value>)', foreground: 'hsl(var(--ink-mute) / <alpha-value>)' },
+        border:      'hsl(var(--line) / <alpha-value>)',
+        primary:     { DEFAULT: 'hsl(var(--ink) / <alpha-value>)', foreground: 'hsl(var(--bg) / <alpha-value>)' },
+        secondary:   { DEFAULT: 'hsl(var(--bg-soft) / <alpha-value>)', foreground: 'hsl(var(--ink) / <alpha-value>)' },
+        accent:      { DEFAULT: 'hsl(var(--moss) / <alpha-value>)', foreground: 'hsl(var(--bg) / <alpha-value>)' },
+        destructive: { DEFAULT: 'hsl(var(--terracotta) / <alpha-value>)', foreground: 'hsl(var(--bg) / <alpha-value>)' },
+        ring:        'hsl(var(--ink) / <alpha-value>)',
       },
       fontFamily: {
         serif: ['var(--font-serif)', 'Times New Roman', 'serif'],
