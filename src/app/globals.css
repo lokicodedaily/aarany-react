@@ -36,6 +36,16 @@
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
 
+  /* Scrollbar — thin, themed */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: hsl(var(--bg-soft)); }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--moss) / 0.45);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: hsl(var(--moss) / 0.75); }
+  * { scrollbar-width: thin; scrollbar-color: hsl(var(--moss) / 0.45) hsl(var(--bg-soft)); }
+
   body {
     @apply bg-bg text-ink font-sans antialiased;
     font-size: 15px;
