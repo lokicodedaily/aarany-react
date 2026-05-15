@@ -25,6 +25,7 @@ export function Nav() {
   const pathname = usePathname() ?? '/';
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [menuClosing, setMenuClosing] = useState(false);
   const [playing, setPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -34,8 +35,13 @@ export function Nav() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  const closeMenu = () => {
+    setMenuClosing(true);
+    setTimeout(() => { setMenuOpen(false); setMenuClosing(false); }, 420);
+  };
+
   // Close menu on route change
-  useEffect(() => { setMenuOpen(false); }, [pathname]);
+  useEffect(() => { closeMenu(); }, [pathname]);
 
   // Lock body scroll when menu is open
   useEffect(() => {
@@ -115,7 +121,7 @@ export function Nav() {
 
             {/* Leaf → × toggle — mobile only */}
             <button
-              onClick={() => setMenuOpen(o => !o)}
+              onClick={() => menuOpen ? closeMenu() : setMenuOpen(true)}
               aria-label={menuOpen ? 'Close menu' : 'Open menu'}
               className="md:hidden relative w-9 h-9 flex items-center justify-center"
             >
@@ -131,10 +137,14 @@ export function Nav() {
       </nav>
 
       {/* Mobile menu overlay */}
-      {menuOpen && (
+      {(menuOpen || menuClosing) && (
         <div
           className="fixed inset-0 z-40 flex flex-col md:hidden"
-          style={{ background: 'hsl(120 25% 13%)', top: '68px' }}
+          style={{
+            background: 'hsl(120 25% 13%)',
+            top: '68px',
+            animation: `${menuClosing ? 'menu-exit' : 'menu-enter'} 420ms ease forwards`,
+          }}
         >
           <div className="flex flex-col flex-1 container py-10">
             <nav className="flex flex-col gap-1 flex-1">
@@ -144,7 +154,14 @@ export function Nav() {
                   href={l.href}
                   aria-current={isActive(l.href, pathname) ? 'page' : undefined}
                   className="flex items-baseline justify-between py-5 border-b border-bg/10 group"
-                  style={{ animationDelay: `${i * 50}ms` }}
+                  style={{
+                    animationName: menuClosing ? 'menu-link-out' : 'menu-link-in',
+                    animationDuration: '240ms',
+                    animationTimingFunction: 'ease',
+                    animationFillMode: 'forwards',
+                    animationDelay: `${i * 40}ms`,
+                    opacity: menuClosing ? 1 : 0,
+                  }}
                 >
                   <span
                     className="font-serif text-[clamp(32px,8vw,48px)] font-light text-bg leading-none group-hover:text-sand transition-colors"
