@@ -122,7 +122,7 @@ export default async function StayPage() {
                       </div>
                     </div>
                     <Button variant="ghost" arrow asChild className="ml-auto">
-                      <a href="mailto:stay@aarany.in">Hold this villa</a>
+                      <a href="https://www.makemytrip.com/hotels/aarany_jungle_resort_and_adventure-details-sonkach.html" target="_blank" rel="noopener noreferrer">Book on MakeMyTrip</a>
                     </Button>
                   </div>
                 </div>

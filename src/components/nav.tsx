@@ -57,7 +57,7 @@ export function Nav() {
         </div>
 
         <Button variant="nav" size="sm" asChild>
-          <Link href="/stay">Reserve</Link>
+          <a href="https://www.makemytrip.com/hotels/aarany_jungle_resort_and_adventure-details-sonkach.html" target="_blank" rel="noopener noreferrer">Plan a Stay</a>
         </Button>
       </div>
     </nav>
