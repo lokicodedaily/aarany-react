@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { LeafMark } from './leaf-mark';
 import { Button } from './ui/button';
 
@@ -21,8 +22,16 @@ function isActive(href: string, pathname: string) {
 
 export function Nav() {
   const pathname = usePathname() ?? '/';
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   return (
-    <nav className="nav-shell">
+    <nav className={scrolled ? 'nav-shell nav-scrolled' : 'nav-shell'}>
       <div className="container flex items-center justify-between h-[68px]">
         <Link href="/" className="flex items-baseline gap-2.5 no-underline">
           <LeafMark size={20} className="text-moss shrink-0 self-center" />

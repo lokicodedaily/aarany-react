@@ -1,11 +1,14 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Metadata } from 'next';
 import { Placeholder } from '@/components/placeholder';
 import { SectionHead } from '@/components/section-head';
 import { Button } from '@/components/ui/button';
+import { Reveal } from '@/components/reveal';
 import { cn } from '@/lib/utils';
 import { fetchOrFallback, queries } from '@/lib/sanity';
 import { fallbackTestimonial } from '@/lib/data';
+import { blurData } from '@/lib/image-placeholders';
 
 export const metadata: Metadata = {
   title: 'AARANY · Jungle Resort & Adventure · Bhopal, Madhya Pradesh',
@@ -69,22 +72,29 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <Placeholder
-            label="Hero · Wide drone shot — pool villas at dusk, jungle beyond, warm lanterns"
-            ratio="21/9"
-            corner="01 · HERO"
-            className="mt-2"
-          />
+          <div className="relative w-full mt-2 overflow-hidden rounded" style={{ aspectRatio: '21/9' }}>
+            <Image
+              src="/HomeHero.webp"
+              alt="Pool villas at dusk, jungle beyond, warm lanterns — AARANY Resort"
+              fill
+              priority
+              placeholder="blur"
+              blurDataURL={blurData['/HomeHero.webp']}
+              className="object-cover"
+              sizes="100vw"
+            />
+          </div>
 
           <div className="grid grid-cols-4 mt-7 border-y border-line">
             {stats.map((s, i) => (
-              <div
+              <Reveal
                 key={s.v}
+                delay={i * 80}
                 className={cn('px-6 py-[22px]', i > 0 && 'border-l border-line')}
               >
                 <div className="display text-[38px] leading-none">{s.k}</div>
                 <div className="mono mt-1.5 text-ink-mute">{s.v}</div>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -111,24 +121,43 @@ export default async function HomePage() {
               <SectionHead num="N° 02" eyebrow="The House" title="A small place, kept on purpose." />
             </div>
             <div className="stack-lg">
-              <p className="font-serif font-light text-[22px] leading-[1.45]">
-                Aarany sits on twelve forested acres at the edge of the Satpura range, an hour and a quarter from Bhopal.
-                The land was a fruit grove; the trees stayed, the rest came slowly.
-              </p>
-              <p className="text-ink-soft text-base max-w-[580px]">
-                We kept the house small on purpose — three pool villas, one shared veranda, a kitchen that opens onto the
-                garden. Mornings are for birds and chai; afternoons for the pool; evenings for whatever the kitchen has
-                picked that day. Children are welcome. Phones, less so.
-              </p>
-              <div className="grid grid-cols-2 gap-4 mt-2">
-                <Placeholder label="Veranda — ceiling fans, cane chairs, brass" ratio="4/5" corner="02·a" />
-                <Placeholder
-                  label="Detail — hand-thrown clay cup on stone ledge"
-                  ratio="4/5"
-                  corner="02·b"
-                  className="mt-10"
-                />
-              </div>
+              <Reveal>
+                <p className="font-serif font-light text-[22px] leading-[1.45]">
+                  Aarany sits on twelve forested acres at the edge of the Satpura range, an hour and a quarter from Bhopal.
+                  The land was a fruit grove; the trees stayed, the rest came slowly.
+                </p>
+              </Reveal>
+              <Reveal delay={80}>
+                <p className="text-ink-soft text-base max-w-[580px]">
+                  We kept the house small on purpose — three pool villas, one shared veranda, a kitchen that opens onto the
+                  garden. Mornings are for birds and chai; afternoons for the pool; evenings for whatever the kitchen has
+                  picked that day. Children are welcome. Phones, less so.
+                </p>
+              </Reveal>
+              <Reveal delay={160} className="grid grid-cols-2 gap-4 mt-2">
+                <div className="relative overflow-hidden rounded" style={{ aspectRatio: '4/5' }}>
+                  <Image
+                    src="/CainChair.webp"
+                    alt="Veranda — cane chair, ceiling fans, brass"
+                    fill
+                    placeholder="blur"
+                    blurDataURL={blurData['/CainChair.webp']}
+                    className="object-cover"
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                  />
+                </div>
+                <div className="relative overflow-hidden rounded mt-10" style={{ aspectRatio: '4/5' }}>
+                  <Image
+                    src="/ChaiCup.webp"
+                    alt="Detail — hand-thrown clay cup on stone ledge"
+                    fill
+                    placeholder="blur"
+                    blurDataURL={blurData['/ChaiCup.webp']}
+                    className="object-cover"
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                  />
+                </div>
+              </Reveal>
             </div>
           </div>
         </div>
@@ -145,8 +174,9 @@ export default async function HomePage() {
           />
           <div className="grid grid-cols-4 mt-16 border-t border-line">
             {highlights.map((it, i) => (
-              <div
+              <Reveal
                 key={it.num}
+                delay={i * 90}
                 className={cn(
                   'px-7 py-8 border-b border-line',
                   i < highlights.length - 1 && 'border-r border-line'
@@ -155,7 +185,7 @@ export default async function HomePage() {
                 <span className="num">{it.num}</span>
                 <h3 className="display text-[28px] mt-4 leading-[1.05]">{it.title}</h3>
                 <p className="text-sm text-ink-soft mt-3.5 leading-[1.55]">{it.body}</p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -165,12 +195,20 @@ export default async function HomePage() {
       <section className="section">
         <div className="container">
           <div className="grid md:grid-cols-[1.2fr_1fr] gap-14 items-center">
-            <Placeholder
-              label="Pink Leaf — café table, pour-over kit, rosemary in a clay vase"
-              ratio="5/4"
-              corner="04"
-            />
-            <div>
+            <Reveal>
+              <div className="relative overflow-hidden rounded" style={{ aspectRatio: '5/4' }}>
+                <Image
+                  src="/coffee.webp"
+                  alt="Pink Leaf — café table, pour-over kit, rosemary in a clay vase"
+                  fill
+                  placeholder="blur"
+                  blurDataURL={blurData['/coffee.webp']}
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 55vw"
+                />
+              </div>
+            </Reveal>
+            <Reveal delay={120}>
               <span className="eyebrow text-pink-deep">N° 04 — A garden café</span>
               <h2 className="display mt-5" style={{ fontSize: 'clamp(40px, 5vw, 72px)' }}>
                 Pink <em>Leaf</em>.
@@ -185,14 +223,14 @@ export default async function HomePage() {
                   <Link href="/pink-leaf">Visit Pink Leaf</Link>
                 </Button>
               </div>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
 
       {/* Quote */}
       <section className="section-tight border-y border-line">
-        <div className="container text-center">
+        <Reveal className="container text-center">
           <svg
             width="48"
             height="48"
@@ -221,7 +259,7 @@ export default async function HomePage() {
             {(testimonial as { author: string }).author.toUpperCase()} ·{' '}
             {(testimonial as { meta?: string }).meta?.toUpperCase()}
           </div>
-        </div>
+        </Reveal>
       </section>
     </>
   );

@@ -1,10 +1,12 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Metadata } from 'next';
-import { Placeholder } from '@/components/placeholder';
 import { SectionHead } from '@/components/section-head';
 import { Button } from '@/components/ui/button';
+import { Reveal } from '@/components/reveal';
 import { fetchOrFallback, queries } from '@/lib/sanity';
 import { fallbackAaranyMenu, fallbackRenovationNotice } from '@/lib/data';
+import { blurData } from '@/lib/image-placeholders';
 
 export const metadata: Metadata = {
   title: 'Dine · AARANY Jungle Resort',
@@ -57,6 +59,7 @@ export default async function DinePage() {
       {notice?.active && (
         <section className="pb-14">
           <div className="container">
+            <Reveal>
             <div
               className="border border-terracotta rounded p-[32px_40px] grid md:grid-cols-[auto_1fr_auto] gap-8 items-center"
               style={{ background: 'color-mix(in oklab, hsl(var(--terracotta)) 8%, hsl(var(--bg)))' }}
@@ -80,6 +83,7 @@ export default async function DinePage() {
                 <div className="mono text-ink-mute text-[10px] mt-1.5">APPLIED AUTOMATICALLY</div>
               </div>
             </div>
+            </Reveal>
           </div>
         </section>
       )}
@@ -88,12 +92,20 @@ export default async function DinePage() {
       <section className="section-tight">
         <div className="container">
           <div className="grid md:grid-cols-[1.1fr_1fr] gap-16 items-start">
-            <Placeholder
-              label="Open kitchen — copper pans, a flame, a marble counter"
-              ratio="4/5"
-              corner="MENU"
-            />
-            <div>
+            <Reveal>
+              <div className="relative w-full overflow-hidden rounded" style={{ aspectRatio: '4/5' }}>
+                <Image
+                  src="/Dine.webp"
+                  alt="Open kitchen — copper pans, a flame, a marble counter"
+                  fill
+                  placeholder="blur"
+                  blurDataURL={blurData['/Dine.webp']}
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </div>
+            </Reveal>
+            <Reveal delay={120}>
               <span className="eyebrow">A short menu, this week</span>
               <h3 className="display text-[44px] mt-3.5 leading-none">What&apos;s cooking</h3>
               <div className="mt-8">
@@ -120,14 +132,14 @@ export default async function DinePage() {
               <p className="mono text-ink-mute text-[10px] mt-8 leading-[1.6]">
                 ALL PRICES IN ₹ · TAXES INCLUDED · MENU ROTATES WITH WHATEVER THE GARDEN IS DOING
               </p>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
 
       {/* Pink Leaf cross-link */}
       <section className="section-tight bg-bg-soft border-t border-line">
-        <div className="container text-center">
+        <Reveal className="container text-center">
           <span className="eyebrow text-pink-deep">For coffee, cake &amp; quiet mornings</span>
           <h3 className="display text-[56px] mt-4">
             Visit our café — <em>Pink Leaf</em>.
@@ -140,7 +152,7 @@ export default async function DinePage() {
               <Link href="/pink-leaf">Pink Leaf Café</Link>
             </Button>
           </div>
-        </div>
+        </Reveal>
       </section>
     </>
   );

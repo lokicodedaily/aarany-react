@@ -3,6 +3,7 @@ import { Cormorant_Garamond, DM_Sans, JetBrains_Mono, Caveat } from 'next/font/g
 import './globals.css';
 import { Nav } from '@/components/nav';
 import { Footer } from '@/components/footer';
+import { NavigationProgress } from '@/components/navigation-progress';
 
 const serif = Cormorant_Garamond({
   subsets: ['latin'],
@@ -53,8 +54,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${serif.variable} ${sans.variable} ${mono.variable} ${hand.variable}`}
     >
       <body>
+        <NavigationProgress />
         <Nav />
-        <main className="animate-fade-in">{children}</main>
+        <main>{children}</main>
         <Footer />
       </body>
     </html>

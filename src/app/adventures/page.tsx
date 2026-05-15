@@ -1,9 +1,12 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { Placeholder } from '@/components/placeholder';
 import { SectionHead } from '@/components/section-head';
 import { Card, CardContent } from '@/components/ui/card';
+import { Reveal } from '@/components/reveal';
 import { fetchOrFallback, queries } from '@/lib/sanity';
 import { fallbackAdventures } from '@/lib/data';
+import { blurData } from '@/lib/image-placeholders';
 
 export const metadata: Metadata = {
   title: 'Adventures · AARANY Jungle Resort',
@@ -32,39 +35,46 @@ const dailyRhythm: [string, string][] = [
   ['22:00', 'Bonfire on the lawn. Telescopes if the sky is clear.'],
 ];
 
+const adventureImages: Record<string, string> = {
+  '01': '/jungleSafari.webp',
+  '02': '/trekking.webp',
+  '03': '/birdwatching.webp',
+  '04': '/bonfire.webp',
+  '05': '/pottery.webp',
+  '06': '/cooking.webp',
+};
+
 export default async function AdventuresPage() {
   const adventures = await fetchOrFallback<Adventure[]>(queries.adventures, fallbackAdventures as Adventure[]);
 
   return (
     <>
       {/* Banner */}
-      <section className="relative">
-        <Placeholder
-          // label="Wide — open jeep on a red-dirt forest track at dawn"
-          ratio="auto"
-          // corner="N° 03"
-          className="!rounded-none !border-0 border-y border-line min-h-[400px] h-[60vh]"
+      <section className="relative border-y border-line min-h-[400px] h-[60vh] overflow-hidden">
+        <Image
+          src="/adventure.webp"
+          alt="Open jeep on a red-dirt forest track at dawn"
+          fill
+          priority
+          placeholder="blur"
+          blurDataURL={blurData['/adventure.webp']}
+          className="object-cover"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-ink/50" />
+        <div
+          className="absolute inset-0 flex items-center"
+          style={{ padding: '0 clamp(40px, 8vw, 120px)' }}
         >
-          <div
-            className="absolute inset-0 flex items-center"
-            style={{ padding: '0 clamp(40px, 8vw, 120px)' }}
-          >
-            <div className="max-w-[600px]">
-              <SectionHead
+          <div className="max-w-[600px] [&_.display]:text-bg [&_.eyebrow]:text-bg/80 [&_.num]:text-bg [&_.num]:text-[12px] [&_p]:text-bg/75 [&_.bg-line]:bg-bg/30">
+            <SectionHead
               num="N° 03"
               eyebrow="Adventures"
               title="Walk it. Drive it. <em>Sit and listen to it.</em>"
-              kicker="Wide — open jeep on a red-dirt forest track at dawn"
+              kicker="Open jeep on a red-dirt forest track at dawn"
             />
-              <h1
-                className="display mt-4 leading-none"
-                style={{ fontSize: 'clamp(48px, 7vw, 96px)' }}
-              >
-                
-              </h1>
-            </div>
           </div>
-        </Placeholder>
+        </div>
       </section>
 
       
@@ -73,14 +83,29 @@ export default async function AdventuresPage() {
       <section className="section">
         <div className="container">
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-7">
-            {adventures.map((a) => (
-              <Card key={a._id} className="flex flex-col p-0">
-                <Placeholder
-                  label={`${a.title} — ${a.subtitle}`}
-                  ratio="4/3"
-                  corner={a.number}
-                  className="!rounded-none !border-0 border-b border-line"
-                />
+            {adventures.map((a, i) => (
+              <Reveal key={a._id} delay={i * 80} className="flex flex-col">
+                <Card className="flex flex-col p-0 flex-1">
+                {adventureImages[a.number] ? (
+                  <div className="relative overflow-hidden border-b border-line" style={{ aspectRatio: '4/3' }}>
+                    <Image
+                      src={adventureImages[a.number]}
+                      alt={`${a.title} — ${a.subtitle}`}
+                      fill
+                      placeholder="blur"
+                      blurDataURL={blurData[adventureImages[a.number]]}
+                      className="object-cover"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                  </div>
+                ) : (
+                  <Placeholder
+                    label={`${a.title} — ${a.subtitle}`}
+                    ratio="4/3"
+                    corner={a.number}
+                    className="!rounded-none !border-0 border-b border-line"
+                  />
+                )}
                 <CardContent>
                   <div className="flex justify-between items-center">
                     <span className="num">{a.number}</span>
@@ -97,7 +122,8 @@ export default async function AdventuresPage() {
                     {a.priceNote}
                   </div>
                 </CardContent>
-              </Card>
+                </Card>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -108,14 +134,15 @@ export default async function AdventuresPage() {
         <div className="container grid md:grid-cols-[1fr_1.6fr] gap-14">
           <SectionHead eyebrow="Daily rhythm" title="A day, <em>roughly.</em>" />
           <div>
-            {dailyRhythm.map(([time, body]) => (
-              <div
+            {dailyRhythm.map(([time, body], i) => (
+              <Reveal
                 key={time}
+                delay={i * 60}
                 className="grid grid-cols-[100px_1fr] gap-6 py-[18px] border-t border-line items-baseline"
               >
                 <span className="mono text-ink-mute">{time}</span>
                 <p className="text-base text-ink-soft">{body}</p>
-              </div>
+              </Reveal>
             ))}
             <div className="border-t border-line" />
           </div>

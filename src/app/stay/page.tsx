@@ -1,11 +1,14 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { Placeholder } from '@/components/placeholder';
 import { SectionHead } from '@/components/section-head';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Reveal } from '@/components/reveal';
 import { cn } from '@/lib/utils';
 import { fetchOrFallback, queries } from '@/lib/sanity';
 import { fallbackRooms } from '@/lib/data';
+import { blurData } from '@/lib/image-placeholders';
 
 export const metadata: Metadata = {
   title: 'Stay · AARANY Jungle Resort',
@@ -23,6 +26,12 @@ type Room = {
   sizeSqM: number;
   description: string;
   features?: string[];
+};
+
+const roomImages: Record<string, { src: string; position?: string }> = {
+  '01': { src: '/villaone.webp' },
+  '02': { src: '/villatwo.webp' },
+  '03': { src: '/villathree.webp' },
 };
 
 export default async function StayPage() {
@@ -46,7 +55,7 @@ export default async function StayPage() {
           {rooms.map((r, i) => {
             const reverse = i % 2 !== 0;
             return (
-              <article
+              <Reveal
                 key={r._id}
                 className={cn(
                   'grid md:grid-cols-[1.15fr_1fr] gap-14 items-center py-[60px] border-t border-line',
@@ -54,11 +63,26 @@ export default async function StayPage() {
                 )}
               >
                 <div className={reverse ? 'md:order-2' : 'md:order-1'}>
-                  <Placeholder
-                    label={`Villa ${r.number} — interior, light streaming through cane blinds`}
-                    ratio="5/4"
-                    corner={`VILLA ${r.number}`}
-                  />
+                  {roomImages[r.number] ? (
+                    <div className="relative overflow-hidden rounded" style={{ aspectRatio: '5/4' }}>
+                      <Image
+                        src={roomImages[r.number].src}
+                        alt={`Villa ${r.number} — ${r.name}`}
+                        fill
+                        placeholder="blur"
+                        blurDataURL={blurData[roomImages[r.number].src]}
+                        className="object-cover"
+                        style={{ objectPosition: roomImages[r.number].position ?? 'center' }}
+                        sizes="(max-width: 768px) 100vw, 55vw"
+                      />
+                    </div>
+                  ) : (
+                    <Placeholder
+                      label={`Villa ${r.number} — interior, light streaming through cane blinds`}
+                      ratio="5/4"
+                      corner={`VILLA ${r.number}`}
+                    />
+                  )}
                 </div>
                 <div
                   className={cn(
@@ -102,7 +126,7 @@ export default async function StayPage() {
                     </Button>
                   </div>
                 </div>
-              </article>
+              </Reveal>
             );
           })}
         </div>

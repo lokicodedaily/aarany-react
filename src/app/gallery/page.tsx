@@ -1,9 +1,27 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { Placeholder } from '@/components/placeholder';
 import { SectionHead } from '@/components/section-head';
 import { Button } from '@/components/ui/button';
+import { Reveal } from '@/components/reveal';
 import { fetchOrFallback, queries } from '@/lib/sanity';
 import { fallbackGallery } from '@/lib/data';
+import { blurData } from '@/lib/image-placeholders';
+
+const galleryImages: Record<string, string> = {
+  g1: '/golden.webp',
+  g2: '/jeep.webp',
+  g3: '/BreakfastVer.webp',
+  g4: '/tree.webp',
+  g5: '/brew.webp',
+  g6: '/cooking.webp',
+  g7: '/garden.webp',
+  g8: '/bonfireLawn.webp',
+  g9: '/deer.webp',
+  g10: '/hammock.webp',
+  g11: '/lesson.webp',
+  g12: '/restWater.webp',
+};
 
 export const metadata: Metadata = {
   title: 'Gallery · AARANY Jungle Resort',
@@ -45,15 +63,28 @@ export default async function GalleryPage() {
             {photos.map((p, i) => {
               const { ratio, span } = ratioStyle(p.aspectRatio);
               return (
-                <div
-                  key={p._id}
-                  style={{ gridColumn: `span ${span}` }}
-                >
-                  <Placeholder
-                    label={p.caption ?? ''}
-                    ratio={ratio}
-                    corner={String(i + 1).padStart(2, '0')}
-                  />
+                <div key={p._id} style={{ gridColumn: `span ${span}` }}>
+                  <Reveal delay={(i % 4) * 70}>
+                    {galleryImages[p._id] ? (
+                      <div className="relative overflow-hidden rounded" style={{ aspectRatio: ratio }}>
+                        <Image
+                          src={galleryImages[p._id]}
+                          alt={p.caption ?? ''}
+                          fill
+                          placeholder="blur"
+                          blurDataURL={blurData[galleryImages[p._id]]}
+                          className="object-cover"
+                          sizes="(max-width: 768px) 50vw, 25vw"
+                        />
+                      </div>
+                    ) : (
+                      <Placeholder
+                        label={p.caption ?? ''}
+                        ratio={ratio}
+                        corner={String(i + 1).padStart(2, '0')}
+                      />
+                    )}
+                  </Reveal>
                 </div>
               );
             })}

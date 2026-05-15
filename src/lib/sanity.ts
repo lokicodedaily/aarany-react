@@ -3,7 +3,7 @@ import { createClient } from '@sanity/client';
 const projectId = process.env.PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.PUBLIC_SANITY_DATASET ?? 'production';
 
-export const isConnected = !!projectId && projectId !== 'your_project_id_here';
+export const isConnected = false; // flip to: !!projectId && projectId !== 'your_project_id_here'  once Sanity has content
 
 export const client = createClient({
   projectId: projectId ?? 'placeholder',
@@ -16,7 +16,7 @@ export const client = createClient({
 export async function fetchOrFallback<T>(query: string, fallback: T): Promise<T> {
   if (!isConnected) return fallback;
   try {
-    const result = await client.fetch<T>(query);
+    const result = await client.fetch<T>(query, {}, { next: { revalidate: 60 } });
     const empty = Array.isArray(result) ? result.length === 0 : result == null;
     return (empty ? fallback : result) as T;
   } catch {

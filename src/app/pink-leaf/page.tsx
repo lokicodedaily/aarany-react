@@ -1,11 +1,13 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Fragment } from 'react';
 import type { Metadata } from 'next';
-import { Placeholder } from '@/components/placeholder';
 import { SectionHead } from '@/components/section-head';
 import { Button } from '@/components/ui/button';
+import { Reveal } from '@/components/reveal';
 import { fetchOrFallback, queries } from '@/lib/sanity';
 import { fallbackBeans, fallbackPinkleafMenu, fallbackCafeHours } from '@/lib/data';
+import { blurData } from '@/lib/image-placeholders';
 
 export const metadata: Metadata = {
   title: 'Pink Leaf Café · AARANY',
@@ -46,7 +48,7 @@ export default async function PinkLeafPage() {
       >
         <div className="container">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
+            <Reveal>
               <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-line bg-bg">
                 <span className="w-2 h-2 rounded-full bg-pink-deep" />
                 <span className="mono text-[10px] text-ink-soft">A SUB OF AARANY · OPEN 07–18</span>
@@ -73,13 +75,20 @@ export default async function PinkLeafPage() {
                   <Link href="/">Find the gate</Link>
                 </Button>
               </div>
-            </div>
-            <div className="relative">
-              <Placeholder
-                label="Pink Leaf — pink walls, cane chair, a single yellow flower in a clay vase"
-                ratio="4/5"
-                corner="P / L"
-              />
+            </Reveal>
+            <Reveal delay={120} className="relative">
+              <div className="relative overflow-hidden rounded" style={{ aspectRatio: '4/5' }}>
+                <Image
+                  src="/pinkcafe.webp"
+                  alt="Pink Leaf — pink walls, cane chair, a single yellow flower in a clay vase"
+                  fill
+                  priority
+                  placeholder="blur"
+                  blurDataURL={blurData['/pinkcafe.webp']}
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </div>
               <div
                 className="absolute -top-4 -right-4 w-[120px] h-[120px] rounded-full bg-pink text-ink p-4 grid place-items-center text-center"
                 style={{ transform: 'rotate(8deg)' }}
@@ -91,7 +100,7 @@ export default async function PinkLeafPage() {
                   <div className="mono text-[8px] mt-1">EXCEPT MONDAYS</div>
                 </div>
               </div>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
@@ -101,12 +110,12 @@ export default async function PinkLeafPage() {
         <div className="container">
           <div className="grid md:grid-cols-3 gap-8">
             {beans.map((b, i) => (
-              <div key={b._id} className="py-8 border-t border-line">
+              <Reveal key={b._id} delay={i * 90} className="py-8 border-t border-line">
                 <div className="mono text-pink-deep">BEAN N° 0{i + 1}</div>
                 <h3 className="display text-[32px] mt-4">{b.name}</h3>
                 <p className="text-sm text-ink-soft mt-3.5 leading-[1.6]">{b.description}</p>
                 <div className="mono mt-5 text-ink-mute">ROAST · {b.roastLevel?.toUpperCase()}</div>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -127,8 +136,8 @@ export default async function PinkLeafPage() {
           <div className="grid md:grid-cols-3 gap-12">
             {sectionOrder
               .filter((k) => grouped[k]?.length)
-              .map((k) => (
-                <div key={k}>
+              .map((k, i) => (
+                <Reveal key={k} delay={i * 90}>
                   <div className="font-hand text-[32px] text-pink-deep">{sectionLabels[k]}</div>
                   <hr className="h-px bg-line border-0 my-3" />
                   {grouped[k].map((item) => (
@@ -143,7 +152,7 @@ export default async function PinkLeafPage() {
                       <div className="mono tabular">₹{item.price}</div>
                     </div>
                   ))}
-                </div>
+                </Reveal>
               ))}
           </div>
         </div>
@@ -154,7 +163,7 @@ export default async function PinkLeafPage() {
         <div className="container">
           <div className="grid md:grid-cols-[1fr_1.4fr] gap-14">
             <SectionHead eyebrow="Find us" title="The hours, <em>kept short.</em>" />
-            <div>
+            <Reveal delay={80}>
               <div
                 className="grid grid-cols-[auto_1fr] gap-x-8 gap-y-3.5 max-w-[540px]"
               >
@@ -168,7 +177,7 @@ export default async function PinkLeafPage() {
                 ))}
               </div>
               <p className="font-hand text-[28px] text-pink-deep mt-10">see you tomorrow x</p>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
