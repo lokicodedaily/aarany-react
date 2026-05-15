@@ -40,8 +40,8 @@ export function Nav() {
     setTimeout(() => { setMenuOpen(false); setMenuClosing(false); }, 320);
   };
 
-  // Close menu on route change
-  useEffect(() => { closeMenu(); }, [pathname]);
+  // Snap closed on route change — no animation needed
+  useEffect(() => { setMenuOpen(false); setMenuClosing(false); }, [pathname]);
 
   // Lock body scroll when menu is open
   useEffect(() => {
