@@ -57,6 +57,20 @@
 }
 
 @layer components {
+  /* Page-width wrapper. Capped at 1320px max regardless of viewport so the
+     editorial proportions hold on wide monitors — matching the prototype. */
+  .container {
+    width: 100%;
+    max-width: 1320px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+  @media (min-width: 768px) {
+    .container { padding-left: 48px; padding-right: 48px; }
+  }
+
   /* Editorial typographic helpers used across pages */
   .mono {
     @apply font-mono uppercase;

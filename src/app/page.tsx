@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { Placeholder } from '@/components/placeholder';
 import { SectionHead } from '@/components/section-head';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import { fetchOrFallback, queries } from '@/lib/sanity';
 import { fallbackTestimonial } from '@/lib/data';
 
@@ -75,13 +76,11 @@ export default async function HomePage() {
             className="mt-2"
           />
 
-          <div className="grid grid-cols-2 md:grid-cols-4 mt-7 border-y border-line">
+          <div className="grid grid-cols-4 mt-7 border-y border-line">
             {stats.map((s, i) => (
               <div
                 key={s.v}
-                className={`p-[22px_24px] ${i === 0 || i === 2 ? '' : 'border-l border-line'} ${
-                  i >= 2 ? 'md:border-l md:border-line border-t md:border-t-0' : ''
-                }`}
+                className={cn('px-6 py-[22px]', i > 0 && 'border-l border-line')}
               >
                 <div className="display text-[38px] leading-none">{s.k}</div>
                 <div className="mono mt-1.5 text-ink-mute">{s.v}</div>
@@ -144,13 +143,14 @@ export default async function HomePage() {
             title="What you&apos;ll find <em>here.</em>"
             kicker="A short list, on purpose. We do a few things and try to do them well."
           />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-16 border-t border-line">
+          <div className="grid grid-cols-4 mt-16 border-t border-line">
             {highlights.map((it, i) => (
               <div
                 key={it.num}
-                className={`p-[32px_28px] border-b border-line ${
-                  i < highlights.length - 1 ? 'lg:border-r' : ''
-                } ${i % 2 === 0 ? 'sm:border-r' : ''} border-line`}
+                className={cn(
+                  'px-7 py-8 border-b border-line',
+                  i < highlights.length - 1 && 'border-r border-line'
+                )}
               >
                 <span className="num">{it.num}</span>
                 <h3 className="display text-[28px] mt-4 leading-[1.05]">{it.title}</h3>
