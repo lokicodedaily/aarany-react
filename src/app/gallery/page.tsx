@@ -27,6 +27,9 @@ export const metadata: Metadata = {
   title: 'Gallery · AARANY Jungle Resort',
   description:
     'Moments from AARANY — pool villas, the jungle, the kitchen, Pink Leaf café. Mostly shot on film.',
+  openGraph: {
+    images: [{ url: '/golden.webp' }],
+  },
 };
 
 type Photo = { _id: string; caption?: string; aspectRatio?: string; order?: number };

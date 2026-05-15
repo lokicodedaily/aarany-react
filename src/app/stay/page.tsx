@@ -14,6 +14,9 @@ export const metadata: Metadata = {
   title: 'Stay · AARANY Jungle Resort',
   description:
     'Three private pool villas — The Mahua, The Gulmohar, and The Tendu — at AARANY Jungle Resort, Bhopal.',
+  openGraph: {
+    images: [{ url: '/villaone.webp' }],
+  },
 };
 
 type Room = {

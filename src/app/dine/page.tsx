@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   title: 'Dine · AARANY Jungle Resort',
   description:
     'A short, seasonal menu from our open kitchen — Bundelkhandi cuisine, garden produce, slow mornings.',
+  openGraph: {
+    images: [{ url: '/Dine.webp' }],
+  },
 };
 
 type MenuItem = { _id: string; name: string; description: string; price: number; section: string };

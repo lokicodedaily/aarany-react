@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   title: 'Pink Leaf Café · AARANY',
   description:
     'A 12-seat garden café for slow mornings — pour-over coffee, sourdough toasties, citrus jam, and music under the gulmohar tree.',
+  openGraph: {
+    images: [{ url: '/pinkcafe.webp' }],
+  },
 };
 
 type Bean = { _id: string; name: string; description: string; roastLevel?: string };

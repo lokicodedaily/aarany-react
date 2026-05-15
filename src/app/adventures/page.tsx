@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   title: 'Adventures · AARANY Jungle Resort',
   description:
     'Jungle safari, forest trekking, birdwatching, stargazing, pottery, and cooking classes at AARANY, Satpura foothills.',
+  openGraph: {
+    images: [{ url: '/adventure.webp' }],
+  },
 };
 
 type Adventure = {
