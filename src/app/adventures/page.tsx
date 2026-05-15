@@ -40,9 +40,9 @@ export default async function AdventuresPage() {
       {/* Banner */}
       <section className="relative">
         <Placeholder
-          label="Wide — open jeep on a red-dirt forest track at dawn"
+          // label="Wide — open jeep on a red-dirt forest track at dawn"
           ratio="auto"
-          corner="N° 03"
+          // corner="N° 03"
           className="!rounded-none !border-0 border-y border-line min-h-[400px] h-[60vh]"
         >
           <div
@@ -50,17 +50,24 @@ export default async function AdventuresPage() {
             style={{ padding: '0 clamp(40px, 8vw, 120px)' }}
           >
             <div className="max-w-[600px]">
-              <span className="eyebrow">Adventures</span>
+              <SectionHead
+              num="N° 03"
+              eyebrow="Adventures"
+              title="Walk it. Drive it. <em>Sit and listen to it.</em>"
+              kicker="Wide — open jeep on a red-dirt forest track at dawn"
+            />
               <h1
                 className="display mt-4 leading-none"
                 style={{ fontSize: 'clamp(48px, 7vw, 96px)' }}
               >
-                Walk it. Drive it. <em>Sit and listen to it.</em>
+                
               </h1>
             </div>
           </div>
         </Placeholder>
       </section>
+
+      
 
       {/* Adventure cards */}
       <section className="section">

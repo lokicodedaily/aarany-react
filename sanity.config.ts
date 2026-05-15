@@ -3,8 +3,8 @@ import { structureTool } from 'sanity/structure';
 import { visionTool } from '@sanity/vision';
 import { schemas } from './schemas/index';
 
-const projectId = process.env.PUBLIC_SANITY_PROJECT_ID ?? '';
-const dataset = process.env.PUBLIC_SANITY_DATASET ?? 'production';
+const projectId = 'l86fwlpi';
+const dataset = 'production';
 
 export default defineConfig({
   name: 'aarany-resort',

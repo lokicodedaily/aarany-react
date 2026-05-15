@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Slot } from '@radix-ui/react-slot';
+import { Slot, Slottable } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { ArrowRight } from 'lucide-react';
 
@@ -36,10 +36,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot : 'button';
     return (
       <Comp ref={ref} className={cn(buttonVariants({ variant, size, className }))} {...props}>
-        <>
+        <Slottable>
           {children}
+        </Slottable>
           {arrow && <ArrowRight className="size-3.5" strokeWidth={1.5} aria-hidden />}
-        </>
+        
       </Comp>
     );
   }

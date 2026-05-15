@@ -17,7 +17,8 @@ export async function fetchOrFallback<T>(query: string, fallback: T): Promise<T>
   if (!isConnected) return fallback;
   try {
     const result = await client.fetch<T>(query);
-    return (result ?? fallback) as T;
+    const empty = Array.isArray(result) ? result.length === 0 : result == null;
+    return (empty ? fallback : result) as T;
   } catch {
     return fallback;
   }
